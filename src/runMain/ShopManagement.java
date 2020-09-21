@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,15 +39,34 @@ public class ShopManagement {
     static HashMap<Integer, String> map = new HashMap<>();
 
     public static void main(String[] args) {
+        Categories cateAdd1 = new Categories(1, "Quan ao", "quan ao thoi", true, 0);
+        Categories cateAdd2 = new Categories(2, "Quan ao nam", "quan ao thoi", true, 1);
+        Categories cateAdd3 = new Categories(3, "Ao somi", "quan ao thoi", true, 2);
+        Categories cateAdd4 = new Categories(4, "Quan au ", "quan ao thoi", true, 2);
+        Categories cateAdd6 = new Categories(6, "Quan ao nu ", "quan ao thoi", true, 1);
+
+        Categories cateAdd5 = new Categories(5, "Trang suc", "Trang suc", true, 0);
+        
+
+        // Them danh muc
+        listCate.add(cateAdd1);
+        listCate.add(cateAdd2);
+
+        listCate.add(cateAdd3);
+
+        listCate.add(cateAdd4);
+
+        listCate.add(cateAdd5);
+        listCate.add(cateAdd6);
         // Khởi tạo đối tượng Scanner
         Scanner scan = new Scanner(System.in);
         //Khởi tạo đối tượng Shop Management
         ShopManagement shop = new ShopManagement();
         //Lay thong tin tu file categories vao listCate
-        File fileCate = new File("categories.txt");
-        if (fileCate.exists() && fileCate.isFile()) {
-            shop.getInfomationFromFileCate();
-        }
+        //File fileCate = new File("categories.txt");
+       // if (fileCate.exists() && fileCate.isFile()) {
+        //    shop.getInfomationFromFileCate();
+        //}
 
         //Lay thong tin tu file categories vao listProduct
         File fileProduct = new File("product.txt");
@@ -82,29 +103,10 @@ public class ShopManagement {
                                 cateChoice = Integer.parseInt(scan.nextLine());
                                 break;
 
-                            } catch (Exception e) {
+                            } catch (NumberFormatException e) {
                                 System.err.println("Vui long nhap 1 so nguyen tu 1-5");
                             }
                         } while (true);
-                        Categories cateAdd1 = new Categories(1, "Quan ao", "quan ao thoi", true, 0);
-                        Categories cateAdd2 = new Categories(2, "Quan ao nam", "quan ao thoi", true, 1);
-                        Categories cateAdd3 = new Categories(3, "Ao somi", "quan ao thoi", true, 2);
-                        Categories cateAdd4 = new Categories(4, "Quan au ", "quan ao thoi", true, 2);
-                        Categories cateAdd6 = new Categories(6, "Quan ao nu ", "quan ao thoi", true, 1);
-
-                        Categories cateAdd5 = new Categories(5, "Trang suc", "Trang suc", true, 0);
-                        Categories abc = new Categories();
-
-                        // Them danh muc
-                        listCate.add(cateAdd1);
-                        listCate.add(cateAdd2);
-
-                        listCate.add(cateAdd3);
-
-                        listCate.add(cateAdd4);
-
-                        listCate.add(cateAdd5);
-                        listCate.add(cateAdd6);
 
                         switch (cateChoice) {
                             case 1:
@@ -120,7 +122,7 @@ public class ShopManagement {
                                             subCateChoice = Integer.parseInt(scan.nextLine());
                                             break;
 
-                                        } catch (Exception e) {
+                                        } catch (NumberFormatException e) {
                                             System.err.println("Vui long nhap 1 so nguyen tu 1-5");
                                         }
                                     } while (true);
@@ -180,7 +182,7 @@ public class ShopManagement {
                             try {
                                 productChoice = Integer.parseInt(scan.nextLine());
                                 break;
-                            } catch (Exception e) {
+                            } catch (NumberFormatException e) {
                                 System.err.println("Vui long chon 1 so nguyen tu 1-7");
                             }
                         } while (true);
@@ -210,12 +212,36 @@ public class ShopManagement {
                                                 System.out.println("Vui long nhap so tu 1-3");
                                         }
                                         break;
-                                    } catch (Exception e) {
+                                    } catch (NumberFormatException e) {
                                         System.err.println("Vui long nhap vao 1 so nguyen!");
                                     }
                                 } while (detailsProductChoice != 3);
                                 break;
                             case 4:
+                                do {
+                                    shop.displayMenuSortProduct();
+
+                                    try {
+                                        mainChoice = Integer.parseInt(scan.nextLine());
+                                        break;
+                                    } catch (NumberFormatException e) {
+                                        System.err.println("Vui long nhap vao 1 so nguyen!");
+                                    }
+                                    switch(mainChoice){
+                                        case 1:
+                                            shop.sortProductByExPriceAsc();
+                                            break;
+                                        case 2: 
+                                            shop.sortProductByProfitDesc();
+                                            break;
+                                        case 3:
+                                            
+                                            break;
+                                        case 4:
+                                            shop.displayListProduct();
+                                            break;
+                                    }
+                                } while (mainChoice != 3);
                                 break;
                             case 5:
                                 break;
@@ -385,7 +411,7 @@ public class ShopManagement {
                     } else if (parentId > 0) {
                         boolean checkParentIdExists = false;
                         for (Categories cate1 : listCate) {
-                            if (cate1.getParentId() == parentId) {
+                            if (cate1.getCatalogId() == parentId) {
                                 checkParentIdExists = true;
                                 break;
                             }
@@ -398,7 +424,11 @@ public class ShopManagement {
                             for (Categories cate1 : listCate) {
                                 while (number1 != 0) {
                                     number1 = shopCate.checkLevelCateId(number1);
+                                   
                                     count++;
+                                    if (count >= 3) {
+                                        break;
+                                    }
                                 }
 
                             }
@@ -524,10 +554,7 @@ public class ShopManagement {
 
     /**
      *
-     * @param <I>
-     * @param <K>
-     * @param id
-     * @param value
+     *
      */
     public static void addSubTreeCate(int id) {
         for (Categories cate : listCate) {
@@ -633,7 +660,7 @@ public class ShopManagement {
                     System.out.println("So san pham can lon hon 0! Vui long nhap lai!");
                 }
 
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.err.println("So san pham can nhap vao 1 so nguyen! Vui long nhap lai!");
             }
         } while (true);
@@ -712,7 +739,7 @@ public class ShopManagement {
                         System.err.println("Ma danh muc san pham khong ton tai! Vui long nhap lai!");
                     }
 
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                     System.err.println("Ma danh muc san pham can nhap vao la 1 so nguyen! Vui long nhap lai!");
                 }
             } while (true);
@@ -751,37 +778,73 @@ public class ShopManagement {
 
     //Case 3.1
     //Hien thi san pham theo tung danh muc
-
     public void displayProductListByCate() {
         listCate.stream().forEach((listCate1) -> {
             int n = listCate1.getCatalogId();
-            System.out.println("\t"+listCate1.getCatalogName());
-            listPro.stream().filter((listPro1) -> (listPro1.getCatalog().getCatalogId()==n)).forEach((listPro1) -> {
+            System.out.println("\t" + listCate1.getCatalogName());
+            listPro.stream().filter((listPro1) -> (listPro1.getCatalog().getCatalogId() == n)).forEach((listPro1) -> {
                 System.out.println(listPro1.getProductName());
             });
         });
     }
+
     //Case 3.2
     //Hien thi chi tiet san pham theo ten tim kiem
-    public void searchProductByName(Scanner scan){
+    public void searchProductByName(Scanner scan) {
         System.out.println("Nhap ten san pham ban muon tim");
         String strNameSearch = scan.nextLine();
         boolean checkProductSearchByName = false;
-        for (Product listPro1 :listPro) {
-            if(listPro1.getProductName().contains(strNameSearch)){
+        for (Product listPro1 : listPro) {
+            if (listPro1.getProductName().contains(strNameSearch)) {
                 listPro1.displayData();
                 checkProductSearchByName = true;
             }
-           
+
         }
-        if(!checkProductSearchByName){
-            System.out.println("Khong tim thay san pham nao co ten "+strNameSearch);
+        if (!checkProductSearchByName) {
+            System.out.println("Khong tim thay san pham nao co ten " + strNameSearch);
         }
-        
+
     }
     /*
      End Case 3 Product
      --------------------------------- END SUB DETAILS PRODUCT -------------------------------
      */
+    /*
+     ***Case 4: Product
+     */
+
+    //**************
+    //Hien thi Menu sap xep san pham
+    public void displayMenuSortProduct() {
+        System.out.println("************************* SAP XEP SAN PHAM******************");
+        System.out.println("1. Sap xep san pham teo gia ban tang dan ");
+        System.out.println("2. Sap xep san pham theo loi nhuan giam dan");
+        System.out.println("3. Quay lai");
+        System.out.println("Su lua chon cua ban: ");
+    }
+    /*
+     ****** Case 4.1 Sắp xếp sản phẩm theo giá bán tăng dần
+     */
+
+    public void sortProductByExPriceAsc() {
+        Collections.sort(listPro, (Product o1, Product o2) -> Float.compare(o1.getExportPrice(), o2.getExportPrice()));
+    }
+    /*
+     ***** Case 4.2
+     */
+
+    public void sortProductByProfitDesc() {
+        Collections.sort(listPro, (Product o1, Product o2) -> Float.compare(o2.getProfit(), o1.getExportPrice()));
+    }
+    /*
+     ******Test List Product
+     */
+
+    public void displayListProduct() {
+        listPro.stream().forEach((product) -> {
+            product.displayData();
+        });
+    }
 
 }
