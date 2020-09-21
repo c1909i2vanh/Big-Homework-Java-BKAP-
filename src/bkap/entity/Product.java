@@ -6,13 +6,14 @@
 package bkap.entity;
 
 import bkap.Intface.IProduct;
+import java.io.Serializable;
 import java.util.Scanner;
 
 /**
  *
  * @author Admin
  */
-public class Product implements IProduct {
+public class Product implements IProduct,Serializable {
 
     private String productId;
     private String productName;
