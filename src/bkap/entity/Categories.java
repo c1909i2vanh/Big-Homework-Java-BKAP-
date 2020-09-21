@@ -76,17 +76,16 @@ public class Categories implements Serializable, ICategories {
     public void setParentId(int parentId) {
         this.parentId = parentId;
     }
-    
 
     @Override
     public void inputData() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Ten danh muc bao gom 6-30 ky tu");
 
         // Nhap ten danh muc
+        System.out.println("Nhap ten danh muc: ");
         do {
-            System.out.println("Nhap ten danh muc: ");
-            String strName = scan.nextLine();
+
+            String strName = scan.nextLine().trim();
             if (strName.length() >= 6 && strName.length() < 30) {
                 this.catalogName = strName;
                 break;
@@ -96,22 +95,23 @@ public class Categories implements Serializable, ICategories {
         } while (true);
 
         //Nhap mo ta danh muc
+        System.out.println("Nhap mo ta danh muc: ");
         do {
-            System.out.println("Nhap mo ta danh muc: ");
-            String strDescrip = scan.nextLine();
 
-            if (!strDescrip.trim().isEmpty()) {
+            String strDescrip = scan.nextLine().trim();
+
+            if (!strDescrip.isEmpty()) {
                 this.descriptions = strDescrip;
                 break;
             } else {
                 System.err.println("Mo ta danh muc khong duoc de trong! Vui long nhap lai!");
             }
         } while (true);
-        
+
         // Nhap trang thai
-        System.out.println("Trang thai danh muc chi nhan true hoac false");
+          System.out.println("Nhap trang thai danh muc: ");
         do {
-            System.out.println("Nhap trang thai danh muc: ");
+          
             String strStatus = scan.nextLine();
             if (strStatus.equals("true") || strStatus.equals("false")) {
                 this.catalogStatus = Boolean.parseBoolean(strStatus);
@@ -126,12 +126,12 @@ public class Categories implements Serializable, ICategories {
     @Override
     @SuppressWarnings("empty-statement")
     public void displayData() {
-       
+
         System.out.printf("Ma danh muc: %s - Ten danh muc: %s \n", this.catalogId, this.catalogName);
-        System.out.printf("\tMo ta danh muc: %s \n",this.descriptions );
-        String str =(this.catalogStatus==true) ? "Hoat dong" : "Khong hoat dong";           
-        System.out.println("Danh muc cha "+this.parentId+"- Trang thai danh muc:"+str);
-    
+        System.out.printf("\tMo ta danh muc: %s \n", this.descriptions);
+        String str = (this.catalogStatus == true) ? "Hoat dong" : "Khong hoat dong";
+        System.out.println("Danh muc cha " + this.parentId + "- Trang thai danh muc:" + str);
+
     }
 
 }

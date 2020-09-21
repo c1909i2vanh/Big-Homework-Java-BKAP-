@@ -204,7 +204,7 @@ public class ShopManagement {
                     int productChoice = 0;
                     do {
                         //Hien thi Menu san pham
-
+                     
                         shop.displayProductMenu();
                         //Validate lua chon san pham
                         do {
@@ -279,8 +279,10 @@ public class ShopManagement {
                                 } while (sortProductChoice != 3);
                                 break;
                             case 5:
+                                shop.updateProductData(scan);
                                 break;
                             case 6:
+                                shop.updateProductStatus(scan);
                                 break;
                             case 7:
 
@@ -303,9 +305,16 @@ public class ShopManagement {
 
     }
 
-    //--------------------------- MENU  --------------------------------
-    //Hàm hiển thị Main Menu
-    //--------------------------- MAIN MENU ----------------------
+    /*
+     *
+     *  ---------------o0o---------- MENU  ----------o0o------------------
+     *
+     */
+    /*
+     *
+     *  --------------------------- MAIN MENU ----------------------
+     * 
+     */
     public void displayMainMenu() {
         System.out.println("****************************MENU*********************");
         System.out.println("1. Quan ly danh muc");
@@ -315,10 +324,9 @@ public class ShopManagement {
 
     }
     /*
-     ------------------------ CATE MENU ----------------------
+     *     ------------------------ MAIN MENU CATEGORIES   ----------------------
      */
 
-    // Hàm hiển thị Cate Menu
     public void displayCateMenu() {
         System.out.println("**********************QUAN LY DANH MUC *****************");
         System.out.println("1. Danh sach danh muc");
@@ -329,10 +337,9 @@ public class ShopManagement {
         System.out.println("Su lua chon cua ban: ");
     }
     /*
-     ------------------------ SUB CATE MENU ----------------------
+     *     ------------------------ SUB CATE MENU ----------------------
      */
 
-    // Hàm hiển thị Sub Cate Menu
     public void displaySubCateMenu() {
         System.out.println("**********************DANH SACH DANH MUC *****************");
         System.out.println("1. Danh sach cay danh muc");
@@ -341,21 +348,57 @@ public class ShopManagement {
         System.out.println("Su lua chon cua ban: ");
     }
     /*
-     --------------------------- END MENU -----------------------------------
-     */
-    /*
-    --------------------    CATEGORIES ------------------------------
-    */
-    /*
-    
-     --------------------------- WRITE READ FILE CATE -------------------
-
-     */
-    /*
-     Ham lay thong tin duoc luu tren file categories.txt
-    
+     *   -------------------------- MAIN MENU PRODUCT  ---------------------
      */
 
+    //
+    public void displayProductMenu() {
+        System.out.println("********************** THONG TIN SAN PHAM *****************");
+        System.out.println("1. Them san pham moi");
+        System.out.println("2. Tinh loi nhuan san pham");
+        System.out.println("3. Hien thi thong tin san pham");
+        System.out.println("4. Sap xep san pham");
+        System.out.println("5. Cap nhat thong tin san pham");
+        System.out.println("6. Cap nhat trang thai san pham");
+        System.out.println("7. Quay lai ");
+        System.out.println("Su lua chon cua ban: ");
+
+    }
+    /*
+     *    ------------------------- SUB MENU PRODUCT 3 -------------------
+     */
+
+    public void displayMenuDetailsProduct() {
+        System.out.println("*************THONG TIN SAN PHAM**************");
+        System.out.println("1. Hien thi san pham theo danh muc");
+        System.out.println("2. Hien ti chi tiet san pham ");
+        System.out.println("3. Quay lai ");
+        System.out.println("Su lua chon cua ban: ");
+    }
+    /*
+     *     ------------------- SUB MENU PRODUCT 4 ---------------------
+     */
+
+    public void displayMenuSortProduct() {
+        System.out.println("************************* SAP XEP SAN PHAM******************");
+        System.out.println("1. Sap xep san pham teo gia ban tang dan ");
+        System.out.println("2. Sap xep san pham theo loi nhuan giam dan");
+        System.out.println("3. Quay lai");
+        System.out.println("Su lua chon cua ban: ");
+    }
+    /*
+     -----------o0o------------ END MENU -----------o0o-------------------
+     */
+    //
+    /*
+     *   --------o0o-----------    CATEGORIES -----o0o--------------------
+     */
+    //
+    /*
+     *   --------------------------- WRITE READ FILE CATE -------------------
+     */
+
+    //     Ham lay thong tin duoc luu tren file categories.txt
     public void writeObjectToFileCate() {
         try {
             FileOutputStream fos = new FileOutputStream("categories.txt");
@@ -373,7 +416,7 @@ public class ShopManagement {
         }
     }
     /*
-     Ham doc du lieu tu File
+     *               Ham doc du lieu tu File
      */
 
     public void getInfomationFromFileCate() {
@@ -391,8 +434,69 @@ public class ShopManagement {
         }
     }
     /*
+     *
+     *   -----------------    END WRITE READ CATEGORIES   ---------------
+     *
     
-    --------------------- CASE 2  CATEGORIES ------------------
+     */
+    /*
+     **  --------------------------      CASE 1: CATEGORIES ----------------
+     */
+    /*
+    
+     *************** CASE 1.1 CATEGORIES    ******************
+     * Hàm hiển thị thông tin chi tiết danh muc
+    
+     */
+
+    public void displayTreeCate() {
+        ShopManagement shop1 = new ShopManagement();
+        for (Categories cate : listCate) {
+            if (cate.getParentId() == 0) {
+                map.put(cate.getCatalogId(), cate.getCatalogName());
+            } else {
+                shop1.addSubTreeCate(cate.getParentId());
+            }
+        }
+    }
+    /*
+     ****************** END CASE 1.1 CATEGORIES   *******************
+     */
+
+    /*
+     Ham add subtree
+     */
+    /**
+     *
+     ********** TEST CATEGORIES
+     *
+     *******
+     * @param id
+     */
+    public static void addSubTreeCate(int id) {
+        listCate.stream().filter((cate) -> (cate.getCatalogId() == id)).forEach((cate) -> {
+            map.put(id, cate.getCatalogName());
+        });
+    }
+    /*
+     Hiển thị thông tin chi tiết danh mục
+     */
+
+    public void displayListCateData() {
+
+        for (Categories cate1 : listCate) {
+            //Gọi hàm displayData bên Class Categories
+            cate1.displayData();
+
+        }
+
+    }
+    /*
+     //------------------ END CASE 1 CATEGORIES-----------
+    
+     /*
+    
+     --------------------- CASE 2  CATEGORIES ------------------
      Hàm thêm danh mục dùng trong Cate Menu
      
      */
@@ -507,7 +611,35 @@ public class ShopManagement {
     }
 
     /*
-    -------------------- CASE 3 CATEGORIES -------------
+     *********** CASE 2 BONUS **********************
+     */
+    //Ham show ma danh muc  dùng trong case 2 CATEGORIES 
+    public void displayListCateId() {
+        for (Categories cate1 : listCate) {
+            System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
+
+        }
+    }
+
+    //Ham check ma danh muc dung trong CASE 2 CATEGORIES  
+    // Nếu tham số nhập vào bằng với Ma danh muc thi ra về 1 số n bằng với parentId của danh muc cha
+    public int checkLevelCateId(int parentId) {
+        int n = 0;
+        for (Categories cate1 : listCate) {
+            if (cate1.getCatalogId() == parentId) {
+                n = cate1.getParentId();
+                break;
+            }
+        }
+        return n;
+    }
+    /*
+     --------------------- END CASE 2 CATEGORIES ----------------
+     */
+
+
+    /*
+     -------------------- CASE 3 CATEGORIES -------------
     
      Hàm  xoa danh muc theo ten
      */
@@ -540,77 +672,12 @@ public class ShopManagement {
         }
 
     }
-
-    //Ham show ma danh muc
-    public void displayListCateId() {
-        for (Categories cate1 : listCate) {
-            System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
-
-        }
-    }
-
-    //Ham check ma danh muc
-    // Nếu tham số nhập vào bằng với Ma danh muc thi ra về 1 số n bằng với parentId của danh muc cha
-    public int checkLevelCateId(int parentId) {
-        int n = 0;
-        for (Categories cate1 : listCate) {
-            if (cate1.getCatalogId() == parentId) {
-                n = cate1.getParentId();
-                break;
-            }
-        }
-        return n;
-    }
     /*
-    
-     ---------------------------------------- END CATEGORIES ----------------------------------------
-
+     -------------------------- END CASE 3 CATE GORIES ------------------
      */
-
-    //--------------------------------------------SUB CATEGORIES -----------------------------
     /*
-     Hàm hiển thị thông tin chi tiết danh muc
-    
-     */
-    public void displayListCateData() {
-
-        for (Categories cate1 : listCate) {
-            //Gọi hàm displayData bên Class Categories
-            cate1.displayData();
-
-        }
-
-    }
-    /*
-     Hàm hiển thị cây danh muc 
-     */
-
-    public void displayTreeCate() {
-        ShopManagement shop1 = new ShopManagement();
-        for (Categories cate : listCate) {
-            if (cate.getParentId() == 0) {
-                map.put(cate.getCatalogId(), cate.getCatalogName());
-            } else {
-                shop1.addSubTreeCate(cate.getParentId());
-            }
-        }
-    }
-    /*
-     Ham add subtree
-     */
-
-    /**
-     *
-     *
-     * @param id
-     */
-    public static void addSubTreeCate(int id) {
-        listCate.stream().filter((cate) -> (cate.getCatalogId() == id)).forEach((cate) -> {
-            map.put(id, cate.getCatalogName());
-        });
-    }
-    /*
-     Hiển thị thông tin chi tiết danh mục
+     ****************** CASE 4 CATEGORIES  ************************
+     **Hàm hiển thị cây danh muc 
      */
 
     public void displayDetailsCateByNameSearch(Scanner scan) {
@@ -629,31 +696,21 @@ public class ShopManagement {
 
     }
     /*
-     //------------------------------------ END SUB CATEGORIES---------------------------------------
+     ****************   END CASE 4 CATEGORIES ****************
+     */
+
+    /*
     
+     ------------o0o0o0o------ END CATEGORIES -----o0o0o0o------
+
      */
     /*
-     ------------------------------------------- PRODUCT ------------------------------------
+     -------------o0o0o0o--------- PRODUCT ---------o0o0o0o-------
    
      */
-
-    //Ham hien thi san pham
-    public void displayProductMenu() {
-        System.out.println("********************** THONG TIN SAN PHAM *****************");
-        System.out.println("1. Them san pham moi");
-        System.out.println("2. Tinh loi nhuan san pham");
-        System.out.println("3. Hien thi thong tin san pham");
-        System.out.println("4. Sap xep san pham");
-        System.out.println("5. Cap nhat thong tin san pham");
-        System.out.println("6. Cap nhat trang thai san pham");
-        System.out.println("7. Quay lai ");
-        System.out.println("Su lua chon cua ban: ");
-
-    }
     /*
-     Ham ghi du lieu vao file product.txt
+     -----------------    END WRITE READ PRODUCT   ---------------
      */
-
     public void writeObjectToFileProduct() {
         try {
             FileOutputStream fos = new FileOutputStream("product.txt");
@@ -689,7 +746,11 @@ public class ShopManagement {
         }
     }
     /*
-     Case 1 Product Menu
+     -----------------    END WRITE READ PRODUCT   ---------------
+     */
+    /*
+     --------------------- CASE 1 PRODUCT ----------------
+     
      Them n san pham moi
      */
 
@@ -797,6 +858,11 @@ public class ShopManagement {
 
     }
     /*
+     ----------------- END CASE 1 PRODUCT --------------------
+    
+     */
+    /*
+     ------------------- CASE 2 PRODUCT ---------------------
      Case 2 Product : Tinh loi nhuan san pham
     
      */
@@ -808,23 +874,16 @@ public class ShopManagement {
         System.out.println("Da tinh xong loi nhuan san pham");
     }
     /*
+     -------------------- END CASE 2 PRODUCT -----------------
      End case 2 Product
      */
 
     /*
     
-     -------------------- CASE 3 PRODUCT: SUB DETAILS PRODUCT ----------------------
-     ------------ CASE 3 PRODUCT ------------------------
-     ----------     HIEN THI ME NU CHI TIET SAN PHAM -----
+     
+     --------------------- CASE 3 PRODUCT ------------------------
+  
      */
-    public void displayMenuDetailsProduct() {
-        System.out.println("*************THONG TIN SAN PHAM**************");
-        System.out.println("1. Hien thi san pham theo danh muc");
-        System.out.println("2. Hien ti chi tiet san pham ");
-        System.out.println("3. Quay lai ");
-        System.out.println("Su lua chon cua ban: ");
-    }
-
     //-----------------CASE 3.1 PRODUCT -----------------------------
     //Hien thi san pham theo tung danh muc
     public void displayProductListByCate() {
@@ -833,7 +892,7 @@ public class ShopManagement {
             System.out.println("\t" + listCate1.getCatalogName());
             listPro.stream().filter((listPro1) -> (listPro1.getCatalog().getCatalogId() == n)).forEach((listPro1) -> {
                 System.out.println("\t \t" + listPro1.getProductName());
-               
+
             });
 
         });
@@ -858,41 +917,31 @@ public class ShopManagement {
 
     }
     /*
-     End Case 3 Product
-     ---------------------- END CASE3 PRODUCT: SUB DETAILS PRODUCT ---------
+   
+     *   ---------------------- END CASE3 PRODUCT: SUB DETAILS PRODUCT ---------
      */
     /*
-     ---------------------------- CASE 4 PRODUCT --------------------------
+     *   ---------------------------- CASE 4 PRODUCT --------------------------
      */
 
-    //**************
-    //Hien thi Menu sap xep san pham
-    public void displayMenuSortProduct() {
-        System.out.println("************************* SAP XEP SAN PHAM******************");
-        System.out.println("1. Sap xep san pham teo gia ban tang dan ");
-        System.out.println("2. Sap xep san pham theo loi nhuan giam dan");
-        System.out.println("3. Quay lai");
-        System.out.println("Su lua chon cua ban: ");
-    }
     /*
-     --------------------- CASE 4.1 PRODUCT-------------------
-     ****** Case 4.1 Sắp xếp sản phẩm theo giá bán tăng dần
+     *   --------------------- CASE 4.1 PRODUCT-------------------
+     **   Case 4.1 Sắp xếp sản phẩm theo giá bán tăng dần
      */
-
     public void sortProductByExPriceAsc() {
         Collections.sort(listPro, (Product o1, Product o2) -> Float.compare(o1.getExportPrice(), o2.getExportPrice()));
     }
     /*
      ------------------- CASE 4.2 PRODUCT -------------
-     ***** Case 4.2 :Sap xep san pham theo loi nhaun giam dan
+     **    Case 4.2 :Sap xep san pham theo loi nhaun giam dan
      */
 
     public void sortProductByProfitDesc() {
         Collections.sort(listPro, (Product o1, Product o2) -> Float.compare(o2.getProfit(), o1.getExportPrice()));
     }
     /*
-     ------------------- HAM TEST CASE 4 PRODUCT ------------
-     ******Test List Product
+     *   ------------------- HAM TEST CASE 4 PRODUCT ------------
+     ***    Test List Product
      */
 
     public void displayListProduct() {
@@ -900,5 +949,97 @@ public class ShopManagement {
             product.displayData();
         });
     }
+    /*
+     *    ---------------- END CASE 4 PRODUCT -----------------
+     */
+    /*
+     *   -------------------- CASE 5 PRODUCT ---------------------
+     **  Cap nhat thong tin san pham
+     */
 
+    public void updateProductData(Scanner scan) {
+        System.out.println("Nhap ma san pham can cap nhat thong tin: ");
+        ShopManagement shopUpdateProduct = new ShopManagement();
+        String productId = scan.nextLine().trim();
+        if (productId.length() == 4 && productId.startsWith("C")) {
+            boolean checkProductIdExists = false;
+            for (Product product : listPro) {
+                if (product.getProductId().equals(productId)) {
+                    Product tempPro = new Product();
+                    tempPro.setProductId(productId);
+                    tempPro.inputData();
+                    int a = listPro.indexOf(product);
+                    // Hien thi danh sach ma danh muc san pham
+                    shopUpdateProduct.displayListCateId();
+                    System.out.println("Vui long chon mot trong nhung ma danh muc san pham ben tren!");
+                    do {
+                        try {
+                            int cateId = Integer.parseInt(scan.nextLine());
+                            boolean checkCateIdExists = false;
+                            Categories temp = new Categories();
+                            // Kiem tra xem ma danh muc nhap vao co ton tai hay chua
+                            // Neu co thi gan gia tri cua Categories cho bien temp
+
+                            for (Categories cate : listCate) {
+                                if (cate.getCatalogId() == cateId) {
+                                    checkCateIdExists = true;
+                                    temp = cate;
+                                    break;
+                                }
+                            }
+                            if (checkCateIdExists) {
+                                tempPro.setCatalog(temp);
+                                break;
+                            } else {
+                                System.err.println("Ma danh muc san pham khong ton tai! Vui long nhap lai!");
+                            }
+
+                        } catch (NumberFormatException e) {
+                            System.err.println("Ma danh muc san pham can nhap vao la 1 so nguyen! Vui long nhap lai!");
+                        }
+                    } while (true);
+
+                    listPro.set(a, tempPro);
+
+                    checkProductIdExists = true;
+                    break;
+                }
+            }
+            if (!checkProductIdExists) {
+                System.err.println("Ma san pham khong dung! Vui long kiem tra lai  ");
+            } else {
+
+            }
+        } else {
+            System.err.println("Vui long nhap ma san pham co 4 ky tu va bat dau bang ky tu C !");
+        }
+
+    }
+
+
+    /*
+     *  ----------------- END CASE 5 PRODUCT -----------------------
+     */
+    /*
+     *  ----------------- CASE 6 PRODUCT -----------------------
+     ** Cap nhat trang thai san pham
+     */
+    public void updateProductStatus(Scanner scan) {
+        System.out.println("Nhap ma san pham can cap nhat trang thai: ");
+        String productId = scan.nextLine().trim();
+         if (productId.length() == 4 && productId.startsWith("C")) {
+           listPro.stream().filter((product)->(product.getProductId().equals(productId))).forEach((product)->{
+               product.setProductStatus(!product.isProductStatus());
+           });
+           
+    
+
+         }else {
+            System.err.println("Vui long nhap ma san pham co 4 ky tu va bat dau bang ky tu C !");
+        }
+         
+    }
+    /*
+     *  ------------------ END CASE 6 PRODUCT --------------------
+     */
 }

@@ -117,9 +117,9 @@ public class Product implements IProduct,Serializable {
         Scanner scan = new Scanner(System.in);
 
         //Nhap tieu de san pham
-        System.out.println("Tieu de san pham phai tu 6-30 ky tu");
+         System.out.println("Nhap tieu  de cho san pham: ");
         do {
-            System.out.println("Nhap tieu  de cho san pham: ");
+         
             String str = scan.nextLine().trim();
             if (str.length() >= 6 && str.length() <= 30) {
                 this.title = str;
@@ -131,10 +131,10 @@ public class Product implements IProduct,Serializable {
         } while (true);
 
         //Nhap gia san pham
-        System.out.println("Nhap gia nhap vao cua san pham");
+          System.out.println("Nhap gia nhap  vao cua san pham:");
         do {
             try {
-                System.out.println("Moi ban nhap gia nhap vao:");
+              
                 this.importPrice = Float.parseFloat(scan.nextLine());
                 if (this.importPrice > 0) {
                     break;
@@ -147,9 +147,9 @@ public class Product implements IProduct,Serializable {
         } while (true);
         
         //Nhap gia ban ra cua san pham
-        System.out.println("Nhap gia ban ra  cua san pham:");
+         System.out.println("Moi ban nhap gia ban cua san pham: ");
         do {            
-            System.out.println("Moi ban nhap gia ban: ");
+           
             try {
                 this.exportPrice = Float.parseFloat(scan.nextLine());
                 if(this.exportPrice>(this.importPrice*IProduct.MIN_INTEREST_RATE)){
@@ -163,10 +163,11 @@ public class Product implements IProduct,Serializable {
         } while (true);
         
         //Nhap mo ta san pham
+         System.out.println("Nhap mo ta cho san pham");
         do {            
-            System.out.println("Nhap mo ta cho san pham");
-            this.descriptions = scan.nextLine();
-            if(this.descriptions.trim().length()!=0){
+           
+            this.descriptions = scan.nextLine().trim();
+            if(this.descriptions.length()!=0){
                 break;
             }else{
                 System.err.println("Mo ta san pham khong duoc de trong!Vui long nhap lai");
@@ -177,7 +178,7 @@ public class Product implements IProduct,Serializable {
         //Nhap trang thai cho san pham
         System.out.println("Nhap trang thai cho san pham: ");
         do {            
-            String strStatus = scan.nextLine();
+            String strStatus = scan.nextLine().trim();
             if(strStatus.equals("true")||strStatus.equals("false")){
                 this.productStatus = Boolean.parseBoolean(strStatus);
                 break;
@@ -197,6 +198,8 @@ public class Product implements IProduct,Serializable {
         strStatus = this.productStatus==true?"Hoat dong":"Khong hoat dong";
         System.out.println("Trang thai san pham: "+ strStatus);
         System.out.printf("Mo ta san pham: %s \n",this.descriptions);
+        System.out.println("Ma danh muc: "+this.catalog.getCatalogId()+" - Ten danh muc: "+this.catalog.getCatalogName());
+        System.out.println("");
       
        }
 
