@@ -45,7 +45,19 @@ public class ShopManagement {
         Categories cateAdd6 = new Categories(6, "Quan ao nu ", "quan ao thoi", true, 1);
 
         Categories cateAdd5 = new Categories(5, "Trang suc", "Trang suc", true, 0);
+        //Categories cateAdd8 = new Categories(8, "Trang suc1", "Trang suc1", true, 5);
 
+                    // Them danh muc
+        //listCate.add(cateAdd8);
+        //Categories cateAdd9 = new Categories(9, "Trang suc2", "Trang suc2", true, 5);
+        // Them danh muc
+        //listCate.add(cateAdd9);
+        //Categories cateAdd10 = new Categories(10, "Vay cong so", "Vay cong so", true, 6);
+        // Them danh muc
+        //listCate.add(cateAdd10);
+        //C/ategories cateAdd11 = new Categories(11, "Vay cong so", "Vay cong so", true, 6);
+        // Them danh muc
+        //listCate.add(cateAdd11);
         // Them danh muc
         listCate.add(cateAdd1);
         listCate.add(cateAdd2);
@@ -133,22 +145,7 @@ public class ShopManagement {
             switch (mainChoice) {
                 // Chức năng quản lý danh mục
                 case 1:
-                    Categories cateAdd8 = new Categories(8, "Trang suc1", "Trang suc1", true, 5);
 
-                    // Them danh muc
-                    listCate.add(cateAdd8);
-                    Categories cateAdd9 = new Categories(9, "Trang suc2", "Trang suc2", true, 5);
-
-                    // Them danh muc
-                    listCate.add(cateAdd9);
-                    Categories cateAdd10 = new Categories(10, "Vay cong so", "Vay cong so", true, 6);
-
-                    // Them danh muc
-                    listCate.add(cateAdd10);
-                    Categories cateAdd11 = new Categories(11, "Vay cong so", "Vay cong so", true, 6);
-
-                    // Them danh muc
-                    listCate.add(cateAdd11);
                     //Khởi tạo 1 số nguyên cateChoice dùng trong Cate Menu
                     int cateChoice = 0;
 
@@ -195,7 +192,6 @@ public class ShopManagement {
                                             case 3:
                                                 //Out Sub Case 1.1
                                                 break;
-                                            
 
                                             default:
                                                 System.out.println("Vui long chon chuc nang tu 1-3!");
@@ -215,9 +211,19 @@ public class ShopManagement {
 
                             case 3:
                                 //Xóa danh mục theo mã danh mục
+                                //Do không muốn xóa nên chuyển sang cập nhật trạng thái
                                 shop.removeCateById(scan);
 
                                 break;
+                            case 8:
+                                //Hàm test xóa tất cả danh mục con từ danh mục cha
+                                List<Categories> listTest = new ArrayList<>();
+                                shop.addChildren(1, listTest);
+                                for(Categories listTest1: listTest){
+                                    listTest1.displayData();
+                                }
+                                break;
+                                
                             case 4:
                                 //Tìm kiếm danh mục theo tên
                                 shop.displayDetailsCateByNameSearch(scan);
@@ -501,22 +507,16 @@ public class ShopManagement {
     
      */
 
-    
-    
-    
-    
-   
     /*
      Hiển thị thông tin chi tiết danh mục
      */
-
     public void displayListTreeCate() {
         List<Categories> listCate1 = new ArrayList<>();
         listCate1 = listCate;
-        
+
         System.out.println("Danh sách danh mục theo sơ đồ cây: ");
         int countLv0 = 1;
-      
+
         for (Categories cate : listCate1) {
             //Gọi hàm displayData bên Class Categories
 
@@ -525,32 +525,31 @@ public class ShopManagement {
                 System.out.println(countLv0 + ". " + cate.getCatalogName());
 
                 int countLv1 = 1;
-               
+
                 for (Categories cate1 : listCate1) {
 
                     if (cate1.getParentId() == cate.getCatalogId()) {
 
                         System.out.println("\t" + countLv0 + "." + countLv1 + ". " + cate1.getCatalogName());
 
-                        int countLv2 = 1;  
+                        int countLv2 = 1;
                         for (Categories cate2 : listCate1) {
                             if (cate2.getParentId() == cate1.getCatalogId()) {
                                 System.out.println("\t\t" + countLv0 + "." + countLv1 + "." + countLv2 + ". " + cate2.getCatalogName());
                                 countLv2++;
-                                
+
                             }
 
                         }
                         countLv1++;
-                      
 
                     }
 
                 }
                 countLv0++;
-               
+
             }
-            
+
         }
         System.out.println("");
 
@@ -568,7 +567,6 @@ public class ShopManagement {
      Hàm thêm danh mục dùng trong Cate Menu
      
      */
-
     public void inputCateData(Scanner scan) {
         System.out.println("Nhap so danh muc can them:");
         int number = 0;
@@ -724,26 +722,7 @@ public class ShopManagement {
         return n;
     }
 
-    //Ham kiem tra Danh muc co ton tai  danh muc con hay ko
-    public int checkCateHaveChildren(int number) {
-
-        for (Categories cate : listCate) {
-            if (cate.getCatalogId() == number) {
-                Categories temp = cate;
-                for (Categories cate1 : listCate) {
-                    if (temp.getCatalogId() == cate1.getParentId()) {
-                        number = 1;
-                        break;
-                    } else {
-                        number = 0;
-                    }
-                }
-            }
-
-        }
-
-        return number;
-    }
+   
 
     public int checkLevelCateId(int parentId) {
         ShopManagement shopCate = new ShopManagement();
@@ -764,6 +743,26 @@ public class ShopManagement {
         return count;
 
     }
+     //Ham kiem tra Danh muc co ton tai  danh muc con hay ko
+    public int checkCateHaveChildren(int number) {
+
+        for (Categories cate : listCate) {
+            if (cate.getCatalogId() == number) {
+                Categories temp = cate;
+                for (Categories cate1 : listCate) {
+                    if (temp.getCatalogId() == cate1.getParentId()) {
+                        number = 1;
+                        break;
+                    } else {
+                        number = 0;
+                    }
+                }
+            }
+
+        }
+
+        return number;
+    }
 
     /*
      --------------------- END CASE 2 CATEGORIES ----------------
@@ -771,7 +770,7 @@ public class ShopManagement {
     /*
      -------------------- CASE 3 CATEGORIES -------------
     
-     Hàm  xoa danh muc theo ten
+     Hàm  cập nhật trạng thái danh mục
      */
     public void removeCateById(Scanner scan) {
         System.out.println("Nhap  ma danh muc can xoa: ");
@@ -784,13 +783,13 @@ public class ShopManagement {
                 System.err.println("Ma danh muc can nhap 1 so nguyen! Vui long nhap lai!");
             }
         } while (true);
-        List<Categories> removeList = new ArrayList<>();
+       
         boolean check = false;
         for (Categories cate : listCate) {
             if (cate.getCatalogId() == number) {
-                check = true;
-                int index = listCate.indexOf(cate);
-                listCate.remove(index);
+               
+                cate.setCatalogStatus(!cate.isCatalogStatus());
+                check =true;
                 break;
             }
         }
@@ -805,6 +804,21 @@ public class ShopManagement {
     /*
      -------------------------- END CASE 3 CATE GORIES ------------------
      */
+    /*
+     -------------CASE 3 TEST ---
+     */
+
+    public void addChildren(int parent, List<Categories> children) {
+        if (0 != parent) {
+            for (Categories cate : listCate) {
+                if (parent == cate.getParentId()) {
+                    children.add(cate);
+                    addChildren(cate.getCatalogId(), children);
+                }
+
+            }
+        }
+    }
     /*
      ****************** CASE 4 CATEGORIES  ************************
      **Hàm hiển thị cây danh muc 
