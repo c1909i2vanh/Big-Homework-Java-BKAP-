@@ -652,9 +652,24 @@ public class ShopManagement {
      */
     //Ham show ma danh muc  dùng trong case 2 CATEGORIES 
     public void displayListCateId() {
+        ShopManagement shop = new ShopManagement();
         for (Categories cate1 : listCate) {
-            System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
+            int n = cate1.getParentId();
+            int count =0;
+            boolean check = false;
+            while(n!=0){
+                n = shop.checkLevelCateId(n);
+                count++;
+            }
+                
+                if(count<2){
+                     System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
 
+                }
+                    
+                
+            
+           
         }
     }
 
