@@ -128,9 +128,9 @@ public class Categories implements Serializable, ICategories {
     public void displayData() {
 
         System.out.printf("Ma danh muc: %s - Ten danh muc: %s \n", this.catalogId, this.catalogName);
-        System.out.printf("\tMo ta danh muc: %s \n", this.descriptions);
+        System.out.printf("Mo ta danh muc: %s \n", this.descriptions);
         String str = (this.catalogStatus == true) ? "Hoat dong" : "Khong hoat dong";
-        System.out.println("Danh muc cha " + this.parentId + "- Trang thai danh muc:" + str);
+        System.out.println("Danh muc cha " + this.parentId + "- Trang thai danh muc:" + str+"\n");
 
     }
 

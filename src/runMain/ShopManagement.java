@@ -195,13 +195,7 @@ public class ShopManagement {
                                             case 3:
                                                 //Out Sub Case 1.1
                                                 break;
-                                            case 4:
-                                                //Hàm test
-                                                shop.displayTreeCate();
-                                                map.forEach((k, v) -> {
-                                                    System.out.println("key: " + k + " value: " + v);
-                                                });
-                                                break;
+                                            
 
                                             default:
                                                 System.out.println("Vui long chon chuc nang tu 1-3!");
@@ -507,35 +501,11 @@ public class ShopManagement {
     
      */
 
-    public void displayTreeCate() {
-        ShopManagement shop1 = new ShopManagement();
-        for (Categories cate : listCate) {
-            if (cate.getParentId() == 0) {
-                map.put(cate.getCatalogId(), cate.getCatalogName());
-            } else {
-                shop1.addSubTreeCate(cate.getParentId());
-            }
-        }
-    }
-    /*
-     ****************** END CASE 1.1 CATEGORIES   *******************
-     */
-
-    /*
-     Ham add subtree
-     */
-    /**
-     *
-     ********** TEST CATEGORIES
-     *
-     *******
-     * @param id
-     */
-    public static void addSubTreeCate(int id) {
-        listCate.stream().filter((cate) -> (cate.getCatalogId() == id)).forEach((cate) -> {
-            map.put(id, cate.getCatalogName());
-        });
-    }
+    
+    
+    
+    
+   
     /*
      Hiển thị thông tin chi tiết danh mục
      */
@@ -543,10 +513,8 @@ public class ShopManagement {
     public void displayListTreeCate() {
         List<Categories> listCate1 = new ArrayList<>();
         listCate1 = listCate;
-        for (Categories listCate11 : listCate1) {
-            System.out.println(listCate11.getCatalogName());
-        }
-        System.out.println("------------------");
+        
+        System.out.println("Danh sách danh mục theo sơ đồ cây: ");
         int countLv0 = 1;
       
         for (Categories cate : listCate1) {
@@ -569,20 +537,28 @@ public class ShopManagement {
                             if (cate2.getParentId() == cate1.getCatalogId()) {
                                 System.out.println("\t\t" + countLv0 + "." + countLv1 + "." + countLv2 + ". " + cate2.getCatalogName());
                                 countLv2++;
+                                
                             }
 
                         }
                         countLv1++;
+                      
 
                     }
 
                 }
                 countLv0++;
+               
             }
-
+            
         }
+        System.out.println("");
 
     }
+    /*
+     ****************** END CASE 1.1 CATEGORIES   *******************
+     */
+
     /*
      //------------------ END CASE 1 CATEGORIES-----------
     
