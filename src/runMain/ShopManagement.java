@@ -89,26 +89,37 @@ public class ShopManagement {
         Scanner scan = new Scanner(System.in);
         //Khởi tạo đối tượng Shop Management
         ShopManagement shop = new ShopManagement();
-        //Lay thong tin tu file categories vao listCate
-        shop.writeObjectToFileCate();
-        shop.writeObjectToFileProduct();
+       
+        //Khởi tạo dối tượng fileCate
         File fileCate = new File("categories.txt");
+        //Khởi tạo dối tượng fileProduct
+        File fileProduct = new File("product.txt");
+        //Nếu fileCate chưa tồn tại thì chạy hàm khởi tạo file
+        if(!fileCate.exists()){
+              shop.writeObjectToFileCate();
+        }
+         //Nếu fileProduct chưa tồn tại thì chạy hàm khởi tạo file
+        if(!fileProduct.exists()){
+             shop.writeObjectToFileProduct();
+        }
+       //Nếu fileCate tồn tại và là file hợp lệ
+        //Chạy hàm lấy thông tin vào listCate
         if (fileCate.exists() && fileCate.isFile()) {
             shop.getInfomationFromFileCate();
         }
-
-        //Lay thong tin tu file categories vao listProduct
-        File fileProduct = new File("product.txt");
+        
+        //Nếu fileProduct tồn tại và là file hợp lệ
+        //Chạy hàm lấy thông tin vào listProduct
         if (fileProduct.exists() && fileProduct.isFile()) {
             shop.getInfomationFromFileProduct();
         }
 
         do {
-            //Hien thi menu chinh
+            //Hiển thị menu chính
             shop.displayMainMenu();
             //Khởi tạo 1 số nguyên mainChoice dùng trong MainMenu
             int mainChoice = 0;
-            //Validate lua chon Main Menu
+            //Validate mainChoice
             do {
                 try {
                     mainChoice = Integer.parseInt(scan.nextLine());
@@ -117,13 +128,15 @@ public class ShopManagement {
                     System.err.println("Vui long nhap 1 so nguyen tu 1-3");
                 }
             } while (true);
+            // Chạy chức năng theo lựa chọn mainChoice
             switch (mainChoice) {
+                // Chức năng quản lý danh mục
                 case 1:
                     //Khởi tạo 1 số nguyên cateChoice dùng trong Cate Menu
                     int cateChoice = 0;
-                    //Ham lay thong tin cac danh muc duoc luu tru trong file categories.txt
+                    
                     do {
-                        //Hien thi Menu danh muc 
+                        //Hiển thị menu Cate
                         shop.displayCateMenu();
 
                         //Validate cateChoice
@@ -138,7 +151,11 @@ public class ShopManagement {
                         } while (true);
 
                         switch (cateChoice) {
+                            //Danh sách danh mục
+                            //Quản lý danh sách danh mục
                             case 1:
+                                // Thực hiện chức năng Sub Categories 
+                                //Thực hiện chức năng  phụ thao tác trên danh mục sản phẩm
                                 // Khoi tao 1 so nguyen subCateChoice dung trong Sub Menu Cate
                                 int subCateChoice = 0;
                                 do {
@@ -151,14 +168,18 @@ public class ShopManagement {
 
                                         switch (subCateChoice) {
                                             case 1:
+                                                //Hiển thị danh sách danh mục theo dạng cây
                                                 shop.displayListCateData();
                                                 break;
                                             case 2:
+                                                //Hiển thị chi tiết thông tin cac danh mục theo ten danh muc
                                                 shop.displayDetailsCateByNameSearch(scan);
                                                 break;
                                             case 3:
+                                                //Out Sub Case 1.1
                                                 break;
                                             case 4:
+                                                //Hàm test
                                                 shop.displayTreeCate();
                                                 map.forEach((k, v) -> {
                                                     System.out.println("key: " + k + " value: " + v);
@@ -177,21 +198,21 @@ public class ShopManagement {
 
                                 break;
                             case 2:
-                                //Them nhieu danh muc
+                                //Thêm nhiều danh mục 
                                 shop.inputCateData(scan);
                                 break;
 
                             case 3:
-
+                                //Xóa danh mục theo mã danh mục
                                 shop.removeCateById(scan);
-                                //Xoa danh muc
+                                
                                 break;
                             case 4:
-                                shop.displayDetailsCateByNameSearch(scan);
-                                //Tim kiem danh muc
+                                //Tìm kiếm danh mục theo tên
+                                shop.displayDetailsCateByNameSearch(scan);                           
                                 break;
                             case 5:
-
+                                // Thoat Catemenu
                                 break;
 
                             default:
@@ -201,12 +222,13 @@ public class ShopManagement {
                     } while (cateChoice != 5);
                     break;
                 case 2:
+                    //Quan ly san pham
                     int productChoice = 0;
                     do {
-                        //Hien thi Menu san pham
-                     
+                        //Hiển thị Menu Product
+
                         shop.displayProductMenu();
-                        //Validate lua chon san pham
+                        //Validate  productChoice
                         do {
                             try {
                                 productChoice = Integer.parseInt(scan.nextLine());
@@ -217,26 +239,32 @@ public class ShopManagement {
                         } while (true);
                         switch (productChoice) {
                             case 1:
+                                //Nhập n sản phẩm
                                 shop.inputProductData(scan);
                                 break;
                             case 2:
+                                //Tính lợi nhuận các sản phẩm đang có
                                 shop.productCalProfit();
                                 break;
                             case 3:
-
+                                //Hiển thị thông tin sản phẩm theo yêu cầu
                                 int detailsProductChoice = 0;
                                 do {
+                                    //Hiển thị Menu chi tiết sản phẩm
                                     shop.displayMenuDetailsProduct();
                                     try {
                                         detailsProductChoice = Integer.parseInt(scan.nextLine());
                                         switch (detailsProductChoice) {
                                             case 1:
+                                                //Hiển thị danh sách sản phẩm theo từng danh mục 
                                                 shop.displayProductListByCate();
                                                 break;
                                             case 2:
+                                                //Hiển thị sản phẩm theo tên tìm kiếm
                                                 shop.searchProductByName(scan);
                                                 break;
                                             case 3:
+                                                //Đóng menu ci tiết sản phẩm
                                                 break;
                                             default:
                                                 System.out.println("Vui long nhap so tu 1-3");
@@ -250,21 +278,25 @@ public class ShopManagement {
                             case 4:
                                 int sortProductChoice = 0;
                                 do {
+                                    //Hiển thị Menu sắp xếp sản phẩm
                                     shop.displayMenuSortProduct();
 
                                     try {
                                         sortProductChoice = Integer.parseInt(scan.nextLine());
                                         switch (sortProductChoice) {
                                             case 1:
+                                                //Sắp xếp sản phẩm theo giá bán tăng dần
                                                 shop.sortProductByExPriceAsc();
                                                 break;
                                             case 2:
+                                                //Sắp xếp sản phẩm theo lợi nhuận giảm dần
                                                 shop.sortProductByProfitDesc();
                                                 break;
                                             case 3:
-
+                                                //Đóng menu sắp xếp sản phẩm
                                                 break;
                                             case 4:
+                                                //Hàm test danh sách sản phẩm
                                                 shop.displayListProduct();
                                                 break;
                                             default:
@@ -279,13 +311,15 @@ public class ShopManagement {
                                 } while (sortProductChoice != 3);
                                 break;
                             case 5:
+                                //Cập nhật thông tin sản phẩm theo mã sản phẩm tùy chọn
                                 shop.updateProductData(scan);
                                 break;
                             case 6:
+                                //Cập nhật trạng thái sản phẩm theo mã sản phẩm tùy chọn
                                 shop.updateProductStatus(scan);
                                 break;
                             case 7:
-
+                                //Đóng Menu sản phẩm
                                 break;
                             default:
                                 System.out.println("Vui long nhap so tu 1-7!");
@@ -294,8 +328,11 @@ public class ShopManagement {
                     } while (productChoice != 7);
                     break;
                 case 3:
+                    //Ghi thông tin lên file categories 
                     shop.writeObjectToFileCate();
+                    //Ghi thông tin lên file product.txt
                     shop.writeObjectToFileProduct();
+                    //Thoát chương trình
                     System.exit(0);
                 default:
                     System.out.println("Vui long nhap 1 so tu 1-3");
@@ -1027,17 +1064,15 @@ public class ShopManagement {
     public void updateProductStatus(Scanner scan) {
         System.out.println("Nhap ma san pham can cap nhat trang thai: ");
         String productId = scan.nextLine().trim();
-         if (productId.length() == 4 && productId.startsWith("C")) {
-           listPro.stream().filter((product)->(product.getProductId().equals(productId))).forEach((product)->{
-               product.setProductStatus(!product.isProductStatus());
-           });
-           
-    
+        if (productId.length() == 4 && productId.startsWith("C")) {
+            listPro.stream().filter((product) -> (product.getProductId().equals(productId))).forEach((product) -> {
+                product.setProductStatus(!product.isProductStatus());
+            });
 
-         }else {
+        } else {
             System.err.println("Vui long nhap ma san pham co 4 ky tu va bat dau bang ky tu C !");
         }
-         
+
     }
     /*
      *  ------------------ END CASE 6 PRODUCT --------------------
