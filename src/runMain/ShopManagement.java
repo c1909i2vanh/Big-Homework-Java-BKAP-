@@ -56,6 +56,7 @@ public class ShopManagement {
 
         listCate.add(cateAdd5);
         listCate.add(cateAdd6);
+
         //Them Product
         Product proAdd1 = new Product("C121", "Quan levis1 ", "Quan bo", 10, 20, 0, "Quan vip1", true, cateAdd4);
         Product proAdd2 = new Product("C122", "Quan levis2 ", "Quan bo1", 10, 40, 0, "Quan vip2", true, cateAdd4);
@@ -89,25 +90,25 @@ public class ShopManagement {
         Scanner scan = new Scanner(System.in);
         //Khởi tạo đối tượng Shop Management
         ShopManagement shop = new ShopManagement();
-       
+
         //Khởi tạo dối tượng fileCate
         File fileCate = new File("categories.txt");
         //Khởi tạo dối tượng fileProduct
         File fileProduct = new File("product.txt");
         //Nếu fileCate chưa tồn tại thì chạy hàm khởi tạo file
-        if(!fileCate.exists()){
-              shop.writeObjectToFileCate();
+        if (!fileCate.exists()) {
+            shop.writeObjectToFileCate();
         }
-         //Nếu fileProduct chưa tồn tại thì chạy hàm khởi tạo file
-        if(!fileProduct.exists()){
-             shop.writeObjectToFileProduct();
+        //Nếu fileProduct chưa tồn tại thì chạy hàm khởi tạo file
+        if (!fileProduct.exists()) {
+            shop.writeObjectToFileProduct();
         }
-       //Nếu fileCate tồn tại và là file hợp lệ
+        //Nếu fileCate tồn tại và là file hợp lệ
         //Chạy hàm lấy thông tin vào listCate
         if (fileCate.exists() && fileCate.isFile()) {
             shop.getInfomationFromFileCate();
         }
-        
+
         //Nếu fileProduct tồn tại và là file hợp lệ
         //Chạy hàm lấy thông tin vào listProduct
         if (fileProduct.exists() && fileProduct.isFile()) {
@@ -132,9 +133,25 @@ public class ShopManagement {
             switch (mainChoice) {
                 // Chức năng quản lý danh mục
                 case 1:
+                    Categories cateAdd8 = new Categories(8, "Trang suc1", "Trang suc1", true, 5);
+
+                    // Them danh muc
+                    listCate.add(cateAdd8);
+                    Categories cateAdd9 = new Categories(9, "Trang suc2", "Trang suc2", true, 5);
+
+                    // Them danh muc
+                    listCate.add(cateAdd9);
+                    Categories cateAdd10 = new Categories(10, "Vay cong so", "Vay cong so", true, 6);
+
+                    // Them danh muc
+                    listCate.add(cateAdd10);
+                    Categories cateAdd11 = new Categories(11, "Vay cong so", "Vay cong so", true, 6);
+
+                    // Them danh muc
+                    listCate.add(cateAdd11);
                     //Khởi tạo 1 số nguyên cateChoice dùng trong Cate Menu
                     int cateChoice = 0;
-                    
+
                     do {
                         //Hiển thị menu Cate
                         shop.displayCateMenu();
@@ -169,7 +186,7 @@ public class ShopManagement {
                                         switch (subCateChoice) {
                                             case 1:
                                                 //Hiển thị danh sách danh mục theo dạng cây
-                                                shop.displayListCateData();
+                                                shop.displayListTreeCate();
                                                 break;
                                             case 2:
                                                 //Hiển thị chi tiết thông tin cac danh mục theo ten danh muc
@@ -205,11 +222,11 @@ public class ShopManagement {
                             case 3:
                                 //Xóa danh mục theo mã danh mục
                                 shop.removeCateById(scan);
-                                
+
                                 break;
                             case 4:
                                 //Tìm kiếm danh mục theo tên
-                                shop.displayDetailsCateByNameSearch(scan);                           
+                                shop.displayDetailsCateByNameSearch(scan);
                                 break;
                             case 5:
                                 // Thoat Catemenu
@@ -329,11 +346,14 @@ public class ShopManagement {
                     break;
                 case 3:
                     //Ghi thông tin lên file categories 
+
                     shop.writeObjectToFileCate();
                     //Ghi thông tin lên file product.txt
                     shop.writeObjectToFileProduct();
+
                     //Thoát chương trình
                     System.exit(0);
+
                 default:
                     System.out.println("Vui long nhap 1 so tu 1-3");
 
@@ -444,6 +464,7 @@ public class ShopManagement {
             listCate.stream().forEach((cate) -> {
                 listCateWrite.add(cate);
             });
+
             oos.writeObject(listCateWrite);
             fos.close();
             oos.close();
@@ -519,11 +540,45 @@ public class ShopManagement {
      Hiển thị thông tin chi tiết danh mục
      */
 
-    public void displayListCateData() {
-
-        for (Categories cate1 : listCate) {
+    public void displayListTreeCate() {
+        List<Categories> listCate1 = new ArrayList<>();
+        listCate1 = listCate;
+        for (Categories listCate11 : listCate1) {
+            System.out.println(listCate11.getCatalogName());
+        }
+        System.out.println("------------------");
+        int countLv0 = 1;
+      
+        for (Categories cate : listCate1) {
             //Gọi hàm displayData bên Class Categories
-            cate1.displayData();
+
+            if (cate.getParentId() == 0) {
+
+                System.out.println(countLv0 + ". " + cate.getCatalogName());
+
+                int countLv1 = 1;
+               
+                for (Categories cate1 : listCate1) {
+
+                    if (cate1.getParentId() == cate.getCatalogId()) {
+
+                        System.out.println("\t" + countLv0 + "." + countLv1 + ". " + cate1.getCatalogName());
+
+                        int countLv2 = 1;  
+                        for (Categories cate2 : listCate1) {
+                            if (cate2.getParentId() == cate1.getCatalogId()) {
+                                System.out.println("\t\t" + countLv0 + "." + countLv1 + "." + countLv2 + ". " + cate2.getCatalogName());
+                                countLv2++;
+                            }
+
+                        }
+                        countLv1++;
+
+                    }
+
+                }
+                countLv0++;
+            }
 
         }
 
@@ -586,7 +641,7 @@ public class ShopManagement {
 
             System.out.println("Nhap 0 neu la danh muc goc");
             System.out.println("Hoac chon ma danh muc  thuoc 1 trong so cac ma danh muc ben tren");
-            shopCate.displayListCateId();
+            shopCate.displayListCateCanAddCate();
             do {
                 System.out.println("Nhap ma danh muc cha");
                 try {
@@ -595,42 +650,15 @@ public class ShopManagement {
                         cate.setParentId(parentId);
                         break;
                     } else if (parentId > 0) {
-                        boolean checkParentIdExists = false;
-                        for (Categories cate1 : listCate) {
-                            if (cate1.getCatalogId() == parentId) {
-                                checkParentIdExists = true;
-                                break;
-                            }
-                        }
-                        if (checkParentIdExists) {
-                            int count = 0;
 
-                            int number1 = parentId;
+                        int count = shopCate.checkLevelCateId(parentId);
+                        if (count < 3) {
+                            cate.setParentId(parentId);
 
-                            for (Categories cate1 : listCate) {
-                                while (number1 != 0) {
-                                    number1 = shopCate.checkLevelCateId(number1);
-
-                                    count++;
-                                    if (count >= 3) {
-                                        break;
-                                    }
-                                }
-
-                            }
-
-                            if (count < 3) {
-                                cate.setParentId(parentId);
-
-                                break;
-                            } else {
-                                System.err.println("Ma danh muc cha vuot qua cap do cho phep la 3!Vui long kiem tra lai cap do danh muc!");
-
-                                System.out.println("Nhap lai ma danh muc: ");
-
-                            }
+                            break;
                         } else {
-                            System.err.println("Ma danh muc cha khong trung! Vui long nhap lai");
+                            System.err.println("Ma danh muc cha phai bang 0 hoac trung voi 1 so ben tren! Vui long nhap lai ");
+
                         }
 
                     } else {
@@ -655,27 +683,61 @@ public class ShopManagement {
         ShopManagement shop = new ShopManagement();
         for (Categories cate1 : listCate) {
             int n = cate1.getParentId();
-            int count =0;
+            int count = 0;
             boolean check = false;
-            while(n!=0){
+            while (n != 0) {
                 n = shop.checkLevelCateId(n);
                 count++;
             }
-                
-                if(count<2){
-                     System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
 
+            if (count < 3) {
+                System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
+
+            }
+
+        }
+    }
+
+    public void displayListCateCanAddCate() {
+        ShopManagement shop = new ShopManagement();
+        for (Categories cate1 : listCate) {
+            int n = cate1.getParentId();
+            int count = 0;
+            boolean check = false;
+
+            n = shop.checkLevelCateId(n);
+            if (n < 2) {
+                System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
+
+            }
+
+        }
+    }
+
+    public void displayListCateIdCanAddProduct() {
+        ShopManagement shop = new ShopManagement();
+        for (Categories cate1 : listCate) {
+            int n = cate1.getCatalogId();
+            int count = 0;
+            boolean check = false;
+            for (Categories cate2 : listCate) {
+                if (n == cate2.getParentId()) {
+                    check = true;
+                    break;
                 }
-                    
-                
-            
-           
+            }
+
+            if (!check) {
+                System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
+
+            }
+
         }
     }
 
     //Ham check ma danh muc dung trong CASE 2 CATEGORIES  
     // Nếu tham số nhập vào bằng với Ma danh muc thi ra về 1 số n bằng với parentId của danh muc cha
-    public int checkLevelCateId(int parentId) {
+    public int checkLevelCateId1(int parentId) {
         int n = 0;
         for (Categories cate1 : listCate) {
             if (cate1.getCatalogId() == parentId) {
@@ -685,11 +747,51 @@ public class ShopManagement {
         }
         return n;
     }
+
+    //Ham kiem tra Danh muc co ton tai  danh muc con hay ko
+    public int checkCateHaveChildren(int number) {
+
+        for (Categories cate : listCate) {
+            if (cate.getCatalogId() == number) {
+                Categories temp = cate;
+                for (Categories cate1 : listCate) {
+                    if (temp.getCatalogId() == cate1.getParentId()) {
+                        number = 1;
+                        break;
+                    } else {
+                        number = 0;
+                    }
+                }
+            }
+
+        }
+
+        return number;
+    }
+
+    public int checkLevelCateId(int parentId) {
+        ShopManagement shopCate = new ShopManagement();
+        int n = 0;
+        int count = 0;
+        for (Categories cate1 : listCate) {
+            while (parentId != 0) {
+                parentId = shopCate.checkLevelCateId1(parentId);
+                count++;
+                if (count == 3) {
+
+                    break;
+                }
+            }
+
+        }
+
+        return count;
+
+    }
+
     /*
      --------------------- END CASE 2 CATEGORIES ----------------
      */
-
-
     /*
      -------------------- CASE 3 CATEGORIES -------------
     
@@ -813,7 +915,7 @@ public class ShopManagement {
         do {
             try {
                 number = Integer.parseInt(scan.nextLine());
-                if (number < 0) {
+                if (number > 0) {
                     break;
                 } else {
                     System.out.println("So san pham can lon hon 0! Vui long nhap lai!");
@@ -873,31 +975,36 @@ public class ShopManagement {
             } while (true);
 
             // Goi ham inputData ben Class Product
-            product.inputData();
+            // product.inputData();
             // Hien thi danh sach ma danh muc san pham
-            shopAddProduct.displayListCateId();
+            shopAddProduct.displayListCateIdCanAddProduct();
             System.out.println("Vui long chon mot trong nhung ma danh muc san pham ben tren!");
             //int cateId = 0;
             do {
                 try {
                     int cateId = Integer.parseInt(scan.nextLine());
-                    boolean checkCateIdExists = false;
-                    Categories temp = new Categories();
-                    // Kiem tra xem ma danh muc nhap vao co ton tai hay chua
-                    // Neu co thi gan gia tri cua Categories cho bien temp
+                    if (cateId > 0) {
 
-                    for (Categories cate : listCate) {
-                        if (cate.getCatalogId() == cateId) {
-                            checkCateIdExists = true;
-                            temp = cate;
+                        boolean checkCateIdExists = false;
+
+                        // Kiểm tra mã danh mục nhập vào có danh mục con hay ko
+                        int count = shopAddProduct.checkCateHaveChildren(cateId);
+                        //Nếu kết quả trả về là 0 thì tạo ra biến temp để lưu thông tin cho sản phẩm
+                        if (count == 0) {
+                            for (Categories cate : listCate) {
+                                if (cate.getCatalogId() == cateId) {
+                                    product.setCatalog(cate);
+                                    break;
+                                }
+                            }
+
                             break;
+                        } else {
+
+                            System.err.println("Vui long nhap vao ma danh muc nam trong danh sach tren ! Vui long nhap lai!");
                         }
-                    }
-                    if (checkCateIdExists) {
-                        product.setCatalog(temp);
-                        break;
                     } else {
-                        System.err.println("Ma danh muc san pham khong ton tai! Vui long nhap lai!");
+                        System.err.println("Ma danh muc  phai lon hon 0! Vui long nhap lai");
                     }
 
                 } catch (NumberFormatException e) {
