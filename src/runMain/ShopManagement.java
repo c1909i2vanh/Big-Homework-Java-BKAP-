@@ -1179,6 +1179,7 @@ public class ShopManagement {
         if (productId.length() == 4 && productId.startsWith("C")) {
             listPro.stream().filter((product) -> (product.getProductId().equals(productId))).forEach((product) -> {
                 product.setProductStatus(!product.isProductStatus());
+                
             });
 
         } else {
