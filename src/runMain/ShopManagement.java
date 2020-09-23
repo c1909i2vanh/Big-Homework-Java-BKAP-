@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Consumer;
+
 
 /**
  *
@@ -38,65 +38,10 @@ public class ShopManagement {
     static HashMap<Integer, String> map = new HashMap<>();
 
     public static void main(String[] args) {
-        Categories cateAdd1 = new Categories(1, "Quan ao", "quan ao thoi", true, 0);
-        Categories cateAdd2 = new Categories(2, "Quan ao nam", "quan ao thoi", true, 1);
-        Categories cateAdd3 = new Categories(3, "Ao somi", "quan ao thoi", true, 2);
-        Categories cateAdd4 = new Categories(4, "Quan au ", "quan ao thoi", true, 2);
-        Categories cateAdd6 = new Categories(6, "Quan ao nu ", "quan ao thoi", true, 1);
-
-        Categories cateAdd5 = new Categories(5, "Trang suc", "Trang suc", true, 0);
-        //Categories cateAdd8 = new Categories(8, "Trang suc1", "Trang suc1", true, 5);
-
-                    // Them danh muc
-        //listCate.add(cateAdd8);
-        //Categories cateAdd9 = new Categories(9, "Trang suc2", "Trang suc2", true, 5);
-        // Them danh muc
-        //listCate.add(cateAdd9);
-        //Categories cateAdd10 = new Categories(10, "Vay cong so", "Vay cong so", true, 6);
-        // Them danh muc
-        //listCate.add(cateAdd10);
-        //C/ategories cateAdd11 = new Categories(11, "Vay cong so", "Vay cong so", true, 6);
-        // Them danh muc
-        //listCate.add(cateAdd11);
-        // Them danh muc
-        listCate.add(cateAdd1);
-        listCate.add(cateAdd2);
-
-        listCate.add(cateAdd3);
-
-        listCate.add(cateAdd4);
-
-        listCate.add(cateAdd5);
-        listCate.add(cateAdd6);
-
-        //Them Product
-        Product proAdd1 = new Product("C121", "Quan levis1 ", "Quan bo", 10, 20, 0, "Quan vip1", true, cateAdd4);
-        Product proAdd2 = new Product("C122", "Quan levis2 ", "Quan bo1", 10, 40, 0, "Quan vip2", true, cateAdd4);
-
-        Product proAdd3 = new Product("C123", "Quan levis3 ", "Quan bo2", 10, 50, 0, "Quan vip3", true, cateAdd4);
-
-        Product proAdd4 = new Product("C124", "Quan levis4 ", "Quan bo3", 10, 60, 0, "Quan vip4", true, cateAdd4);
-
-        Product proAdd5 = new Product("C125", "Quan levis5 ", "Quan bo4", 10, 70, 0, "Quan vip5", false, cateAdd4);
-        Product proAdd6 = new Product("C126", "Quan levis6 ", "Quan bo4", 10, 70, 0, "Quan vip5", false, cateAdd3);
-
-        Product proAdd7 = new Product("C127", "Quan levis7 ", "Quan bo4", 10, 70, 0, "Quan vip5", false, cateAdd3);
-
-        Product proAdd8 = new Product("C128", "Quan levis8 ", "Quan bo4", 10, 70, 0, "Quan vip5", false, cateAdd3);
-
-        listPro.add(proAdd1);
-        listPro.add(proAdd2);
-
-        listPro.add(proAdd3);
-
-        listPro.add(proAdd4);
-
-        listPro.add(proAdd5);
-        listPro.add(proAdd6);
-
-        listPro.add(proAdd7);
-
-        listPro.add(proAdd8);
+        
+        
+      
+      
 
         // Khởi tạo đối tượng Scanner
         Scanner scan = new Scanner(System.in);
@@ -215,15 +160,8 @@ public class ShopManagement {
                                 shop.removeCateById(scan);
 
                                 break;
-                            case 8:
-                                //Hàm test xóa tất cả danh mục con từ danh mục cha
-                                List<Categories> listTest = new ArrayList<>();
-                                shop.addChildren(1, listTest);
-                                for(Categories listTest1: listTest){
-                                    listTest1.displayData();
-                                }
-                                break;
-                                
+                            
+
                             case 4:
                                 //Tìm kiếm danh mục theo tên
                                 shop.displayDetailsCateByNameSearch(scan);
@@ -428,7 +366,7 @@ public class ShopManagement {
     public void displayMenuDetailsProduct() {
         System.out.println("*************THONG TIN SAN PHAM**************");
         System.out.println("1. Hien thi san pham theo danh muc");
-        System.out.println("2. Hien ti chi tiet san pham ");
+        System.out.println("2. Hien thi chi tiet san pham ");
         System.out.println("3. Quay lai ");
         System.out.println("Su lua chon cua ban: ");
     }
@@ -722,8 +660,6 @@ public class ShopManagement {
         return n;
     }
 
-   
-
     public int checkLevelCateId(int parentId) {
         ShopManagement shopCate = new ShopManagement();
         int n = 0;
@@ -743,7 +679,9 @@ public class ShopManagement {
         return count;
 
     }
-     //Ham kiem tra Danh muc co ton tai  danh muc con hay ko
+
+    //Ham kiem tra Danh muc co ton tai  danh muc con hay ko
+
     public int checkCateHaveChildren(int number) {
 
         for (Categories cate : listCate) {
@@ -783,13 +721,13 @@ public class ShopManagement {
                 System.err.println("Ma danh muc can nhap 1 so nguyen! Vui long nhap lai!");
             }
         } while (true);
-       
+
         boolean check = false;
         for (Categories cate : listCate) {
             if (cate.getCatalogId() == number) {
-               
+
                 cate.setCatalogStatus(!cate.isCatalogStatus());
-                check =true;
+                check = true;
                 break;
             }
         }
@@ -810,6 +748,7 @@ public class ShopManagement {
 
     public void addChildren(int parent, List<Categories> children) {
         if (0 != parent) {
+
             for (Categories cate : listCate) {
                 if (parent == cate.getParentId()) {
                     children.add(cate);
@@ -1036,15 +975,43 @@ public class ShopManagement {
     //-----------------CASE 3.1 PRODUCT -----------------------------
     //Hien thi san pham theo tung danh muc
     public void displayProductListByCate() {
-        listCate.stream().forEach((listCate1) -> {
-            int n = listCate1.getCatalogId();
-            System.out.println("\t" + listCate1.getCatalogName());
-            listPro.stream().filter((listPro1) -> (listPro1.getCatalog().getCatalogId() == n)).forEach((listPro1) -> {
-                System.out.println("\t \t" + listPro1.getProductName());
+        ShopManagement shopCate = new ShopManagement();
+        int countCate=1;
+        for (Categories cate : listCate) {
+            int n = cate.getCatalogId();
+                  
+            if (shopCate.checkCateHaveProduct(n) == 1) {
+                
+                System.out.println("Danh muc thu " + countCate + ": " + cate.getCatalogName());
+                int countProduct =1;
+                for (Product product : listPro) {
+                    
+                    if (product.getCatalog().getCatalogId() == n) {
+                        System.out.println("\tSan pham thu " + countProduct + ": " + product.getProductName());
+                        countProduct++;
+                    }
+                    
+                }
+               countCate++;
+            }
+            
+        }
+    }
 
-            });
-
-        });
+    public int checkCateHaveProduct(int cateId) {
+        int number =2;
+        for (Categories cate : listCate) {
+            for (Product product : listPro) {
+                if (cateId == product.getCatalog().getCatalogId()) {
+                     number = 1;
+                    break;
+                }
+                else{
+                    number =0;
+                }
+            }
+        }
+        return number;
     }
 
     //----------- CASE 3.2 PRODUCT-------------
