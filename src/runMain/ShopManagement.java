@@ -39,73 +39,10 @@ public class ShopManagement {
     static HashMap<Integer, String> map = new HashMap<>();
 
     public static void main(String[] args) {
-        Categories cateAdd1 = new Categories(1, "Quan ao", "quan ao thoi", true, 0);
-        Categories cateAdd2 = new Categories(2, "Quan ao nam", "quan ao thoi", true, 1);
-        Categories cateAdd3 = new Categories(3, "Ao somi", "quan ao thoi", true, 2);
-        Categories cateAdd4 = new Categories(4, "Quan au ", "quan ao thoi", true, 2);
-        Categories cateAdd6 = new Categories(6, "Quan ao nu ", "quan ao thoi", true, 1);
         
-        Categories cateAdd5 = new Categories(5, "Trang suc", "Trang suc", true, 0);
-        Categories cateAdd8 = new Categories(8, "Trang suc1", "Trang suc1", true, 5);
         
-                    // Them danh muc
-        listCate.add(cateAdd8);
-        Categories cateAdd9 = new Categories(9, "Trang suc2", "Trang suc2", true, 5);
-         //Them danh muc
-        listCate.add(cateAdd9);
-        Categories cateAdd10 = new Categories(10, "Vay cong so", "Vay cong so", true, 6);
-         //Them danh muc
-        listCate.add(cateAdd10);
-        Categories cateAdd11 = new Categories(11, "Vay cong so", "Vay cong so", true, 6);
-         //Them danh muc
-        listCate.add(cateAdd11);
-        // Them danh muc
-        //listCate.add(cateAdd9);
-        //Categories cateAdd10 = new Categories(10, "Vay cong so", "Vay cong so", true, 6);
-        // Them danh muc
-        //listCate.add(cateAdd10);
-        //C/ategories cateAdd11 = new Categories(11, "Vay cong so", "Vay cong so", true, 6);
-        // Them danh muc
-        //listCate.add(cateAdd11);
-        // Them danh muc
-        listCate.add(cateAdd1);
-        listCate.add(cateAdd2);
-      
-        listCate.add(cateAdd3);
-      
-        listCate.add(cateAdd4);
+         
 
-        listCate.add(cateAdd5);
-        listCate.add(cateAdd6);
-
-        //Them Product
-        Product proAdd1 = new Product("C121", "Quan levis1 ", "Quan bo", 10, 20, 0, "Quan vip1", true, cateAdd4);
-        Product proAdd2 = new Product("C122", "Quan levis2 ", "Quan bo1", 10, 40, 0, "Quan vip2", true, cateAdd4);
-
-        Product proAdd3 = new Product("C123", "Quan levis3 ", "Quan bo2", 10, 50, 0, "Quan vip3", true, cateAdd4);
-
-        Product proAdd4 = new Product("C124", "Quan levis4 ", "Quan bo3", 10, 60, 0, "Quan vip4", true, cateAdd4);
-
-        Product proAdd5 = new Product("C125", "Quan levis5 ", "Quan bo4", 10, 70, 0, "Quan vip5", false, cateAdd4);
-        Product proAdd6 = new Product("C126", "Quan levis6 ", "Quan bo4", 10, 70, 0, "Quan vip5", false, cateAdd3);
-
-        Product proAdd7 = new Product("C127", "Quan levis7 ", "Quan bo4", 10, 70, 0, "Quan vip5", false, cateAdd3);
-
-        Product proAdd8 = new Product("C128", "Quan levis8 ", "Quan bo4", 10, 70, 0, "Quan vip5", false, cateAdd3);
-
-        listPro.add(proAdd1);
-        listPro.add(proAdd2);
-
-        listPro.add(proAdd3);
-
-        listPro.add(proAdd4);
-
-        listPro.add(proAdd5);
-        listPro.add(proAdd6);
-
-        listPro.add(proAdd7);
-
-        listPro.add(proAdd8);
 
         // Khởi tạo đối tượng Scanner
         Scanner scan = new Scanner(System.in);
@@ -224,14 +161,7 @@ public class ShopManagement {
                                 shop.removeCateById(scan);
 
                                 break;
-                            case 8:
-                                //Hàm test xóa tất cả danh mục con từ danh mục cha
-                                List<Categories> listTest = new ArrayList<>();
-                                shop.addChildren(1, listTest);
-                                for(Categories listTest1: listTest){
-                                    listTest1.displayData();
-                                }
-                                break;
+                           
                             
 
                             case 4:
