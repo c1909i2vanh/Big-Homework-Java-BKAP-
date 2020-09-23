@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
+
 /**
  *
  * @author GIANG
@@ -43,13 +44,21 @@ public class ShopManagement {
         Categories cateAdd3 = new Categories(3, "Ao somi", "quan ao thoi", true, 2);
         Categories cateAdd4 = new Categories(4, "Quan au ", "quan ao thoi", true, 2);
         Categories cateAdd6 = new Categories(6, "Quan ao nu ", "quan ao thoi", true, 1);
-
+        
         Categories cateAdd5 = new Categories(5, "Trang suc", "Trang suc", true, 0);
-        //Categories cateAdd8 = new Categories(8, "Trang suc1", "Trang suc1", true, 5);
-
+        Categories cateAdd8 = new Categories(8, "Trang suc1", "Trang suc1", true, 5);
+        
                     // Them danh muc
-        //listCate.add(cateAdd8);
-        //Categories cateAdd9 = new Categories(9, "Trang suc2", "Trang suc2", true, 5);
+        listCate.add(cateAdd8);
+        Categories cateAdd9 = new Categories(9, "Trang suc2", "Trang suc2", true, 5);
+         //Them danh muc
+        listCate.add(cateAdd9);
+        Categories cateAdd10 = new Categories(10, "Vay cong so", "Vay cong so", true, 6);
+         //Them danh muc
+        listCate.add(cateAdd10);
+        Categories cateAdd11 = new Categories(11, "Vay cong so", "Vay cong so", true, 6);
+         //Them danh muc
+        listCate.add(cateAdd11);
         // Them danh muc
         //listCate.add(cateAdd9);
         //Categories cateAdd10 = new Categories(10, "Vay cong so", "Vay cong so", true, 6);
@@ -61,9 +70,9 @@ public class ShopManagement {
         // Them danh muc
         listCate.add(cateAdd1);
         listCate.add(cateAdd2);
-
+      
         listCate.add(cateAdd3);
-
+      
         listCate.add(cateAdd4);
 
         listCate.add(cateAdd5);
@@ -223,7 +232,8 @@ public class ShopManagement {
                                     listTest1.displayData();
                                 }
                                 break;
-                                
+                            
+
                             case 4:
                                 //Tìm kiếm danh mục theo tên
                                 shop.displayDetailsCateByNameSearch(scan);
@@ -428,7 +438,7 @@ public class ShopManagement {
     public void displayMenuDetailsProduct() {
         System.out.println("*************THONG TIN SAN PHAM**************");
         System.out.println("1. Hien thi san pham theo danh muc");
-        System.out.println("2. Hien ti chi tiet san pham ");
+        System.out.println("2. Hien thi chi tiet san pham ");
         System.out.println("3. Quay lai ");
         System.out.println("Su lua chon cua ban: ");
     }
@@ -743,7 +753,7 @@ public class ShopManagement {
         return count;
 
     }
-     //Ham kiem tra Danh muc co ton tai  danh muc con hay ko
+    //Ham kiem tra Danh muc co ton tai  danh muc con hay ko
     public int checkCateHaveChildren(int number) {
 
         for (Categories cate : listCate) {
@@ -783,13 +793,13 @@ public class ShopManagement {
                 System.err.println("Ma danh muc can nhap 1 so nguyen! Vui long nhap lai!");
             }
         } while (true);
-       
+
         boolean check = false;
         for (Categories cate : listCate) {
             if (cate.getCatalogId() == number) {
-               
+
                 cate.setCatalogStatus(!cate.isCatalogStatus());
-                check =true;
+                check = true;
                 break;
             }
         }
@@ -810,6 +820,7 @@ public class ShopManagement {
 
     public void addChildren(int parent, List<Categories> children) {
         if (0 != parent) {
+
             for (Categories cate : listCate) {
                 if (parent == cate.getParentId()) {
                     children.add(cate);
@@ -1036,15 +1047,43 @@ public class ShopManagement {
     //-----------------CASE 3.1 PRODUCT -----------------------------
     //Hien thi san pham theo tung danh muc
     public void displayProductListByCate() {
-        listCate.stream().forEach((listCate1) -> {
-            int n = listCate1.getCatalogId();
-            System.out.println("\t" + listCate1.getCatalogName());
-            listPro.stream().filter((listPro1) -> (listPro1.getCatalog().getCatalogId() == n)).forEach((listPro1) -> {
-                System.out.println("\t \t" + listPro1.getProductName());
+        ShopManagement shopCate = new ShopManagement();
+        int countCate=1;
+        for (Categories cate : listCate) {
+            int n = cate.getCatalogId();
+                  
+            if (shopCate.checkCateHaveProduct(n) == 1) {
+                
+                System.out.println("Danh muc thu " + countCate + ": " + cate.getCatalogName());
+                int countProduct =1;
+                for (Product product : listPro) {
+                    
+                    if (product.getCatalog().getCatalogId() == n) {
+                        System.out.println("\tSan pham thu " + countProduct + ": " + product.getProductName());
+                        countProduct++;
+                    }
+                    
+                }
+               countCate++;
+            }
+            
+        }
+    }
 
-            });
-
-        });
+    public int checkCateHaveProduct(int cateId) {
+        int number =2;
+        for (Categories cate : listCate) {
+            for (Product product : listPro) {
+                if (cateId == product.getCatalog().getCatalogId()) {
+                     number = 1;
+                    break;
+                }
+                else{
+                    number =0;
+                }
+            }
+        }
+        return number;
     }
 
     //----------- CASE 3.2 PRODUCT-------------
