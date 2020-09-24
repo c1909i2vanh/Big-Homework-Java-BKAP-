@@ -10,16 +10,13 @@ import bkap.entity.Product;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import java.util.HashMap;
-
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 /**
  *
@@ -34,7 +31,6 @@ public class ShopManagement {
     static List<Categories> listCate = new ArrayList<>();
     //Khởi tạo listProduct
     static List<Product> listPro = new ArrayList<>();
-    
 
     public static void main(String[] args) {
 
@@ -305,6 +301,7 @@ public class ShopManagement {
      * 
      */
     public void displayMainMenu() {
+        slowdownSpeed();
         System.out.println("**************************************MENU**************************************");
         System.out.println("1. Quan ly danh muc");
         System.out.println("2. Quan ly san pham");
@@ -317,6 +314,7 @@ public class ShopManagement {
      */
 
     public void displayCateMenu() {
+        slowdownSpeed();
         System.out.println("**********************************QUAN LY DANH MUC **********************************");
         System.out.println("1. Danh sach danh muc");
         System.out.println("2. Them danh muc");
@@ -330,6 +328,7 @@ public class ShopManagement {
      */
 
     public void displaySubCateMenu() {
+        slowdownSpeed();
         System.out.println("***********************************DANH SACH DANH MUC ***********************************");
         System.out.println("1. Danh sach cay danh muc");
         System.out.println("2. Thong tin chi tiet danh muc");
@@ -342,6 +341,7 @@ public class ShopManagement {
 
     //
     public void displayProductMenu() {
+        slowdownSpeed();
         System.out.println("************************************* QUAN LY SAN PHAM *************************************");
         System.out.println("1. Them san pham moi");
         System.out.println("2. Tinh loi nhuan san pham");
@@ -358,6 +358,7 @@ public class ShopManagement {
      */
 
     public void displayMenuDetailsProduct() {
+        slowdownSpeed();
         System.out.println("************************************* THONG TIN SAN PHAM*************************************");
         System.out.println("1. Hien thi san pham theo danh muc");
         System.out.println("2. Hien thi chi tiet san pham ");
@@ -384,10 +385,10 @@ public class ShopManagement {
      */
     //
     /*
-     *   --------------------------- WRITE READ FILE CATE -------------------
+     *   -------------------------   WRITE READ FILE CATE   ----------------
      */
 
-    //     Ham lay thong tin duoc luu tren file categories.txt
+    //*************   Ham lay thong tin duoc luu tren file categories.txt ***********
     public void writeObjectToFileCate() {
         try {
             FileOutputStream fos = new FileOutputStream("categories.txt");
@@ -406,7 +407,7 @@ public class ShopManagement {
         }
     }
     /*
-     *               Ham doc du lieu tu File
+     ******************  Ham doc du lieu tu File ******************
      */
 
     public void getInfomationFromFileCate() {
@@ -429,6 +430,17 @@ public class ShopManagement {
      *
     
      */
+
+    public void slowdownSpeed() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+     **  --------------------------    CATEGORIES ----------------
+     */
     /*
      **  --------------------------      CASE 1: CATEGORIES ----------------
      */
@@ -443,45 +455,31 @@ public class ShopManagement {
      Hiển thị thông tin chi tiết danh mục
      */
     public void displayListTreeCate() {
-        List<Categories> listCate1 = new ArrayList<>();
-        listCate1 = listCate;
 
         System.out.println("Danh sách danh mục theo sơ đồ cây: ");
-        int countLv0 = 1;
-
-        for (Categories cate : listCate1) {
-            //Gọi hàm displayData bên Class Categories
-
+        int countLv1 = 1;
+        for (Categories cate : listCate) {
+            //In ra danh muc cap 1 nếu parentId == 0
             if (cate.getParentId() == 0) {
-
-                System.out.println(countLv0 + ". " + cate.getCatalogName());
-
-                int countLv1 = 1;
-
-                for (Categories cate1 : listCate1) {
-
+                System.out.println(countLv1 + ". " + cate.getCatalogName());
+                int countLv2 = 1;
+                for (Categories cate1 : listCate) {
+                    //Nếu parenId trong vòng lặp 2 trùng CatalogId vòng 1 thì in ra
                     if (cate1.getParentId() == cate.getCatalogId()) {
-
-                        System.out.println("\t" + countLv0 + "." + countLv1 + ". " + cate1.getCatalogName());
-
-                        int countLv2 = 1;
-                        for (Categories cate2 : listCate1) {
+                        System.out.println("\t" + countLv1 + "." + countLv2 + ". " + cate1.getCatalogName());
+                        int countLv3 = 1;
+                        for (Categories cate2 : listCate) {
+                            //Nếu parenId vòng 3 trùng CatalogId vòng 2 thì in ra 
                             if (cate2.getParentId() == cate1.getCatalogId()) {
-                                System.out.println("\t\t" + countLv0 + "." + countLv1 + "." + countLv2 + ". " + cate2.getCatalogName());
-                                countLv2++;
-
+                                System.out.println("\t\t" + countLv1 + "." + countLv2 + "." + countLv3 + ". " + cate2.getCatalogName());
+                                countLv3++;
                             }
-
                         }
-                        countLv1++;
-
+                        countLv2++;
                     }
-
                 }
-                countLv0++;
-
+                countLv1++;
             }
-
         }
         System.out.println("");
 
@@ -501,6 +499,7 @@ public class ShopManagement {
      */
     public void inputCateData(Scanner scan) {
         System.out.println("Nhap so danh muc can them:");
+        ShopManagement shop = new ShopManagement();
         int number = 0;
         do {
             try {
@@ -510,7 +509,7 @@ public class ShopManagement {
                 } else {
                     System.out.println("Vui long nhap vao mot so lon hon 0!");
                 }
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.err.println("Vui long nhap vao 1 so nguyen!");
             }
         } while (true);
@@ -519,28 +518,20 @@ public class ShopManagement {
             System.out.println("Nhap ma danh muc: ");
             ShopManagement shopCate = new ShopManagement();
             Categories cate = new Categories();
-
             do {
                 try {
                     int cateId = Integer.parseInt(scan.nextLine());
-                    boolean checkCateIdExists = true;
                     //Kiểm tra xem CateId được nhập đã tồn tại hay chưa
-                    for (Categories cate1 : listCate) {
-                        if (cate1.getCatalogId() == cateId) {
-                            checkCateIdExists = false;
-                            break;
-                        }
-                    }
-                    if (checkCateIdExists) {
-                        // Sau khi kiểm tra nếu mã chưa tồn tại thì gán Id cho danh mục
+                    if (!shop.checkCateIdExists(cateId)) {
+                        // Sau khi kiểm tra nếu số nhập vào hợp lệ thì thêm mã danh mục mới
                         cate.setCatalogId(cateId);
-
                         break;
                     } else {
-                        //Nếu mã đã tồn tại thì thông báo lại
+                        //Nếu mã danh mục đã tồn tại thì thông báo lại
                         System.err.println("Ma danh muc " + cateId + " da ton tai! Vui long nhap lai!");
                     }
-                } catch (Exception e) {
+
+                } catch (NumberFormatException e) {
                     System.err.println("Ma danh muc phai la 1 so nguyen! Vui long nhap lai!");
                 }
             } while (true);
@@ -552,25 +543,41 @@ public class ShopManagement {
                 System.out.println("Nhap ma danh muc cha");
                 try {
                     int parentId = Integer.parseInt(scan.nextLine());
+                    boolean check = false;
                     if (parentId == 0) {
                         cate.setParentId(parentId);
                         break;
                     } else if (parentId > 0) {
-
-                        int count = shopCate.checkLevelCateId(parentId);
-                        if (count < 3) {
-                            cate.setParentId(parentId);
-
-                            break;
-                        } else {
-                            System.err.println("Ma danh muc cha phai bang 0 hoac trung voi 1 so ben tren! Vui long nhap lai ");
-
-                        }
-
+                        //Kiểm tra nếu mã nhập vào thuộc list Cate thì tiếp tục
+                        check = true;
                     } else {
                         System.err.println("Ma danh muc phai  la 1 so nguyen duong! Vui long nhap lai");
                     }
-                } catch (Exception e) {
+                    /*
+                     ***  Kiểm tra mã danh mục đã tồn tại
+                     */
+                    if (check) {
+                        if (shopCate.checkCateIdExists(parentId)) {
+                            check = true;
+                        } else {
+                            check = false;
+                            System.err.println("Ma danh muc cha khong ton tai! Vui long nhap ma danh muc cha bang 0 hoac thuoc 1 trong cac danh muc ơ tren!");
+                        }
+                    }
+
+                    /* 
+                     *  Kiểm tra mã danh mục cha không phải cấp 3 
+                     *  Thì thêm mã danh mục vào danh sách
+                     */
+                    if (check) {
+                        if (shopCate.checkLevelCateId(parentId) < 3) {
+                            cate.setParentId(parentId);
+                            break;
+                        } else {
+                            System.err.println("Ma danh muc cha phai bang 0 hoac la mot trong nhung ma ben tren! Vui long nhap lai ");
+                        }
+                    }
+                } catch (NumberFormatException e) {
                     System.err.println("Ma danh muc cha phai la 1 so nguyen! Vui long nhap lai!");
                 }
             } while (true);
@@ -587,16 +594,18 @@ public class ShopManagement {
      */
     //Ham show ma danh muc  dùng trong case 2 CATEGORIES 
     public void displayListCateId() {
+        //Hiển thị danh sách danh mục 
         ShopManagement shop = new ShopManagement();
         for (Categories cate1 : listCate) {
             int n = cate1.getParentId();
             int count = 0;
-            boolean check = false;
             while (n != 0) {
                 n = shop.checkLevelCateId(n);
                 count++;
+                if (count == 3) {
+                    break;
+                }
             }
-
             if (count < 3) {
                 System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
 
@@ -606,45 +615,30 @@ public class ShopManagement {
     }
 
     public void displayListCateCanAddCate() {
+        //Hiển thị danh sách  mã danh mục cha có thể thêm danh mục con
         ShopManagement shop = new ShopManagement();
-        for (Categories cate1 : listCate) {
-            int n = cate1.getParentId();
-            int count = 0;
-            boolean check = false;
-
-            n = shop.checkLevelCateId(n);
-            if (n < 2) {
+        listCate.stream().forEach((Categories cate1) -> {
+            int number = shop.checkLevelCateId(cate1.getParentId());
+            //Hệ thống cho phép dannh mục tối đa 3 cấp
+            //Nếu n trả về nhỏ hơn 2 thì có thể thêm  danh mục vào danh sách
+            if (number < 2) {
                 System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
-
             }
-
-        }
+        });
     }
 
     public void displayListCateIdCanAddProduct() {
+        //Hiển thị danh sách mã danh mục có thể thêm sản phẩm
         ShopManagement shop = new ShopManagement();
-        for (Categories cate1 : listCate) {
-            int n = cate1.getCatalogId();
-            int count = 0;
-            boolean check = false;
-            for (Categories cate2 : listCate) {
-                if (n == cate2.getParentId()) {
-                    check = true;
-                    break;
-                }
-            }
-
-            if (!check) {
-                System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
-
-            }
-
-        }
+        listCate.stream().filter((cate1) -> (!shop.checkCateHaveChildren(cate1.getCatalogId()))).forEach((cate1) -> {
+            System.out.println("Ma danh muc: " + cate1.getCatalogId() + "\t Ten danh muc: " + cate1.getCatalogName());
+        });
     }
 
     //Ham check ma danh muc dung trong CASE 2 CATEGORIES  
     // Nếu tham số nhập vào bằng với Ma danh muc thi ra về 1 số n bằng với parentId của danh muc cha
-    public int checkLevelCateId1(int parentId) {
+    public int getParentIdCate(int parentId) {
+        //Lấy về mã danh mục cha
         int n = 0;
         for (Categories cate1 : listCate) {
             if (cate1.getCatalogId() == parentId) {
@@ -655,45 +649,40 @@ public class ShopManagement {
         return n;
     }
 
+    public boolean checkCateIdExists(int parentId) {
+        //Kiểm tra mã danh mục có tồn tại hay không
+        return listCate.stream().anyMatch((cate) -> (cate.getCatalogId() == parentId));
+    }
+
     public int checkLevelCateId(int parentId) {
+        //Kiểm tra cấp độ mã danh mục trong danh sách
         ShopManagement shopCate = new ShopManagement();
-        int n = 0;
         int count = 0;
         for (Categories cate1 : listCate) {
             while (parentId != 0) {
-                parentId = shopCate.checkLevelCateId1(parentId);
+                parentId = shopCate.getParentIdCate(parentId);
                 count++;
                 if (count == 3) {
-
+                    // Ngừng vòng lặp nếu count vượt quá 3
                     break;
                 }
             }
-
         }
-
         return count;
-
     }
 
     //Ham kiem tra Danh muc co ton tai  danh muc con hay ko
-    public int checkCateHaveChildren(int number) {
-
+    public boolean checkCateHaveChildren(int number) {
         for (Categories cate : listCate) {
             if (cate.getCatalogId() == number) {
-                Categories temp = cate;
                 for (Categories cate1 : listCate) {
-                    if (temp.getCatalogId() == cate1.getParentId()) {
-                        number = 1;
-                        break;
-                    } else {
-                        number = 0;
+                    if (cate.getCatalogId() == cate1.getParentId()) {
+                        return true;
                     }
                 }
             }
-
         }
-
-        return number;
+        return false;
     }
 
     /*
@@ -711,7 +700,7 @@ public class ShopManagement {
             try {
                 number = Integer.parseInt(scan.nextLine());
                 break;
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.err.println("Ma danh muc can nhap 1 so nguyen! Vui long nhap lai!");
             }
         } while (true);
@@ -719,7 +708,6 @@ public class ShopManagement {
         boolean check = false;
         for (Categories cate : listCate) {
             if (cate.getCatalogId() == number) {
-
                 cate.setCatalogStatus(!cate.isCatalogStatus());
                 check = true;
                 break;
@@ -742,7 +730,6 @@ public class ShopManagement {
 
     public void addChildren(int parent, List<Categories> children) {
         if (0 != parent) {
-
             for (Categories cate : listCate) {
                 if (parent == cate.getParentId()) {
                     children.add(cate);
@@ -855,17 +842,11 @@ public class ShopManagement {
             Product product = new Product();
             System.out.println("Nhap ma san pham");
             do {
-                String strProductId = scan.nextLine().trim();
-                if (strProductId.length() == 4 && strProductId.startsWith("C")) {
-                    boolean checkInputProductIdExists = false;
-                    for (Product pro : listPro) {
-                        if (pro.getProductId().equals(strProductId)) {
-                            checkInputProductIdExists = true;
-                            break;
-                        }
-                    }
-                    if (!checkInputProductIdExists) {
-                        product.setProductId(strProductId);
+                String strInputId = scan.nextLine().trim();
+                if (strInputId.length() == 4 && strInputId.startsWith("C")) {
+                    //Kiểm tra mã sản phẩm đã tồn tại hay chưa
+                    if (!shopAddProduct.checkProductIdExists(strInputId)) {
+                        product.setProductId(strInputId);
                         break;
                     } else {
                         System.err.println("Ma san pham da ton tai! Vui long nhap lai");
@@ -878,17 +859,17 @@ public class ShopManagement {
             // Nhap ten san pham
             System.out.println("Nhap ten san pham");
             do {
-                String strProductName = scan.nextLine().trim();
-                if (strProductName.length() >= 6 && strProductName.length() <= 50) {
-                    boolean checkInputProductNameExists = false;
+                String strInputName = scan.nextLine().trim();
+                if (strInputName.length() >= 6 && strInputName.length() <= 50) {
+                    boolean checkProductNameExists = false;
                     for (Product pro : listPro) {
-                        if (pro.getProductId().equals(strProductName)) {
-                            checkInputProductNameExists = true;
+                        if (pro.getProductName().equals(strInputName)) {
+                            checkProductNameExists = true;
                             break;
                         }
                     }
-                    if (!checkInputProductNameExists) {
-                        product.setProductName(strProductName);
+                    if (!checkProductNameExists) {
+                        product.setProductName(strInputName);
                         break;
                     } else {
                         System.err.println("Ten san pham da ton tai! Vui long nhap lai");
@@ -900,35 +881,58 @@ public class ShopManagement {
 
             // Goi ham inputData ben Class Product
             // product.inputData();
-            // Hien thi danh sach ma danh muc san pham
+            /*  Hiển thị danh sách danh mục có thể thêm sản phẩm
+             *  với điều kiện mã danh mục ấy ko có danh mục con
+             */
             shopAddProduct.displayListCateIdCanAddProduct();
             System.out.println("Vui long chon mot trong nhung ma danh muc san pham ben tren!");
             //int cateId = 0;
             do {
                 try {
                     int cateId = Integer.parseInt(scan.nextLine());
+                    boolean check = false;
                     if (cateId > 0) {
+                        //Kiểm tra nếu dữ liệu nhập vào lớn hơn 0 thì biến check = true
+                        check = true;
+                    } else {
+                        System.err.println("Ma danh muc  phai lon hon 0! Vui long nhap lai");
+                    }
 
-                        boolean checkCateIdExists = false;
+                    if (check) {
+                        // Kiểm  tra mã danh mục có tồn tại hay không 
+                        if (shopAddProduct.checkCateIdExists(cateId)) {
+                            //Nếu mã danh mục tồn tại trong danh sách mã danh mục thì  trả về biến check = true
+                            check = true;
+                        } else {
+                            System.err.println("Ma danh muc khong ton tai! Vui long nhap lai");
+                        }
+                    }
 
-                        // Kiểm tra mã danh mục nhập vào có danh mục con hay ko
-                        int count = shopAddProduct.checkCateHaveChildren(cateId);
-                        //Nếu kết quả trả về là 0 thì tạo ra biến temp để lưu thông tin cho sản phẩm
-                        if (count == 0) {
-                            for (Categories cate : listCate) {
-                                if (cate.getCatalogId() == cateId) {
-                                    product.setCatalog(cate);
-                                    break;
-                                }
-                            }
+                    // Nếu mã danh mục tồn tại thì kiểm tra tiếp
+                    if (check) {
+                        // Nếu mã danh mục ko có danh mục con
+                        if (!shopAddProduct.checkCateHaveChildren(cateId)) {
+                            // Khởi tạo vòng lặp để lấy về thực thể danh mục tương ứng với mã danh mục được nhập
+                            check = true;
+                            //Out vòng do while
 
-                            break;
                         } else {
 
                             System.err.println("Vui long nhap vao ma danh muc nam trong danh sach tren ! Vui long nhap lai!");
                         }
-                    } else {
-                        System.err.println("Ma danh muc  phai lon hon 0! Vui long nhap lai");
+                        //Nếu thõa mãn các điều kiện trên
+                        if (check) {
+                            for (Categories cate : listCate) {
+                                if (cate.getCatalogId() == cateId) {
+                                    // Gán danh mục cho sản phẩm
+                                    product.setCatalog(cate);
+                                    //Out vòng for
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+
                     }
 
                 } catch (NumberFormatException e) {
@@ -1024,7 +1028,7 @@ public class ShopManagement {
 
         }
         if (!checkProductSearchByName) {
-            System.out.println("Khong tim thay san pham nao co ten " + strNameSearch+"! Vui long kiem tra lai!");
+            System.out.println("Khong tim thay san pham nao co ten " + strNameSearch + "! Vui long kiem tra lai!");
         }
 
     }
@@ -1043,8 +1047,8 @@ public class ShopManagement {
     public void sortProductByExPriceAsc() {
         Collections.sort(listPro, (Product o1, Product o2) -> Float.compare(o1.getExportPrice(), o2.getExportPrice()));
         System.out.println("Da sap xep xong danh sach san pham theo gia tang dan!");
-        listPro.stream().forEach((product)->{
-            System.out.println("Ma san pham: "+product.getProductId()+" - Ten san pham: "+product.getProductName()+" - Gia ban ra: "+product.getExportPrice());
+        listPro.stream().forEach((product) -> {
+            System.out.println("Ma san pham: " + product.getProductId() + " - Ten san pham: " + product.getProductName() + " - Gia ban ra: " + product.getExportPrice());
         });
     }
     /*
@@ -1056,9 +1060,9 @@ public class ShopManagement {
         Collections.sort(listPro, (Product o1, Product o2) -> Float.compare(o2.getProfit(), o1.getExportPrice()));
         System.out.println("Da sap xep xong danh sach san pham theo loi nhuan giam dan!");
         listPro.stream().forEach((product) -> {
-            System.out.println("Ma san pham :"+product.getProductId()+" - Ten san pham: "+product.getProductName()+" - Loi nhuan: "+product.getProfit());
+            System.out.println("Ma san pham :" + product.getProductId() + " - Ten san pham: " + product.getProductName() + " - Loi nhuan: " + product.getProfit());
         });
-        
+
     }
     /*
      *   ------------------- HAM TEST CASE 4 PRODUCT ------------
@@ -1077,66 +1081,95 @@ public class ShopManagement {
      *   -------------------- CASE 5 PRODUCT ---------------------
      **  Cap nhat thong tin san pham
      */
+//Kiểm tra tên sản phẩm có tồn tại
+
+    public boolean checkProductIdExists(String productId) {
+        return listPro.stream().anyMatch((product) -> (product.getProductId().equals(productId)));
+    }
+
+    public boolean checkProductNameExists(String productName) {
+        return listPro.stream().anyMatch((product) -> (product.getProductId().equals(productName)));
+    }
 
     public void updateProductData(Scanner scan) {
         System.out.println("Nhap ma san pham can cap nhat thong tin: ");
         ShopManagement shopUpdateProduct = new ShopManagement();
         String productId = scan.nextLine().trim();
-        if (productId.length() == 4 && productId.startsWith("C")) {
-            boolean checkProductIdExists = false;
-            for (Product product : listPro) {
-                if (product.getProductId().equals(productId)) {
-                    Product tempPro = new Product();
-                    tempPro.setProductId(productId);
-                    tempPro.inputData();
-                    int a = listPro.indexOf(product);
-                    // Hien thi danh sach ma danh muc san pham
-                    shopUpdateProduct.displayListCateId();
-                    System.out.println("Vui long chon mot trong nhung ma danh muc san pham ben tren!");
-                    do {
-                        try {
-                            int cateId = Integer.parseInt(scan.nextLine());
-                            boolean checkCateIdExists = false;
-                            Categories temp = new Categories();
-                            // Kiem tra xem ma danh muc nhap vao co ton tai hay chua
-                            // Neu co thi gan gia tri cua Categories cho bien temp
+        boolean checkCateIdExists = false;
+        for (Product product : listPro) {
+            if (product.getProductId().equals(productId)) {
+                Product tempPro = new Product();
+                tempPro.setProductId(productId);
 
-                            for (Categories cate : listCate) {
-                                if (cate.getCatalogId() == cateId) {
-                                    checkCateIdExists = true;
-                                    temp = cate;
+                int productUpdateIndex = listPro.indexOf(product);
+                // Hien thi danh sach ma danh muc san pham
+                shopUpdateProduct.displayListCateIdCanAddProduct();
+                System.out.println("Vui long chon mot trong nhung ma danh muc san pham ben tren!");
+                System.out.println("Ban nhap ma danh muc cua san pham: ");
+                do {
+
+                    try {
+                        int cateId = Integer.parseInt(scan.nextLine());
+                        boolean checkCateId = false;
+                        // Kiem tra xem ma danh muc nhap vao co ton tai hay chua
+                        // Neu co thi gan gia tri cua Categories cho bien temp
+                        if (shopUpdateProduct.checkCateIdExists(cateId)) {
+                            checkCateId = true;
+                        } else {
+                            System.err.println("Ma danh muc khong ton tai! Vui long nhap lai");
+                        }
+                        if (checkCateId) {
+                            if (!shopUpdateProduct.checkCateHaveChildren(cateId)) {
+                                checkCateId = true;
+                            } else {
+                                checkCateId = false;
+                                System.err.println("Ma danh muc khong hop le! Vui long nhap lai");
+                            }
+                        }
+                        if (checkCateId) {
+                            for (Categories listCate1 : listCate) {
+                                if (listCate1.getCatalogId() == cateId) {
+                                    tempPro.setCatalog(listCate1);
                                     break;
                                 }
                             }
-                            if (checkCateIdExists) {
-                                tempPro.setCatalog(temp);
-                                break;
-                            } else {
-                                System.err.println("Ma danh muc san pham khong ton tai! Vui long nhap lai!");
-                            }
-
-                        } catch (NumberFormatException e) {
-                            System.err.println("Ma danh muc san pham can nhap vao la 1 so nguyen! Vui long nhap lai!");
+                            break;
                         }
-                    } while (true);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Ma danh muc san pham can nhap vao la 1 so nguyen! Vui long nhap lai!");
+                    }
+                } while (true);
+                // Nhap ten san pham
+                System.out.println("Nhap ten san pham");
+                do {
+                    String strInputName = scan.nextLine().trim();
+                    if (strInputName.length() >= 6 && strInputName.length() <= 50) {
 
-                    listPro.set(a, tempPro);
+                        if (!shopUpdateProduct.checkProductNameExists(strInputName)) {
+                            tempPro.setProductName(strInputName);
+                            break;
+                        } else {
+                            System.err.println("Ten san pham da ton tai! Vui long nhap lai");
+                        }
+                    } else {
+                        System.err.println("Ten san pham gom 6-50 ky tu ! Vui long nhap lai");
+                    }
+                } while (true);
 
-                    checkProductIdExists = true;
-                    break;
-                }
+                tempPro.inputData();
+                listPro.set(productUpdateIndex, tempPro);
+                checkCateIdExists = true;
+                break;
             }
-            if (!checkProductIdExists) {
-                System.err.println("Ma san pham khong dung! Vui long kiem tra lai  ");
-            } else {
+        }
+        if (checkCateIdExists) {
+            System.out.println("Cap nhat thanh cong san pham " + productId);
 
-            }
         } else {
-            System.err.println("Vui long nhap ma san pham co 4 ky tu va bat dau bang ky tu C !");
+            System.err.println("Cap nhat that bai! Khong tim thay san pham " + productId);
         }
 
     }
-
 
     /*
      *  ----------------- END CASE 5 PRODUCT -----------------------
@@ -1148,14 +1181,19 @@ public class ShopManagement {
     public void updateProductStatus(Scanner scan) {
         System.out.println("Nhap ma san pham can cap nhat trang thai: ");
         String productId = scan.nextLine().trim();
-        if (productId.length() == 4 && productId.startsWith("C")) {
-            listPro.stream().filter((product) -> (product.getProductId().equals(productId))).forEach((product) -> {
+        boolean checkupdate = false;
+        for (Product product : listPro) {
+            if (product.getProductId().equals(productId)) {
                 product.setProductStatus(!product.isProductStatus());
-
-            });
-
+                checkupdate = true;
+                break;
+            }
+        }
+        if (checkupdate) {
+            System.out.println("Cap nhat trang thai san pham " + productId + " thanh cong!");
         } else {
-            System.err.println("Vui long nhap ma san pham co 4 ky tu va bat dau bang ky tu C !");
+            System.out.println("Khong tim thay san pham co ma la " + productId);
+
         }
 
     }
