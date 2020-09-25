@@ -193,11 +193,9 @@ public class Product implements IProduct,Serializable {
     @Override
     public void displayData() {
         System.out.printf("Ma SP: %s - Ten SP: %s -Tieu de san pham: %s \n",this.productId,this.productName,this.title);
-        System.out.printf("Gia nhap vao: %.1f - Gia ban ra: %.1f - Loi nhuan: %.1f \n",this.exportPrice,this.importPrice,this.profit);
-        String strStatus ="";
-        strStatus = this.productStatus==true?"Hoat dong":"Khong hoat dong";
-        System.out.println("Trang thai san pham: "+ strStatus);
-        System.out.printf("Mo ta san pham: %s \n",this.descriptions);
+        System.out.printf("Gia nhap vao: %.1f - Gia ban ra: %.1f - Loi nhuan: %.1f \n",this.importPrice,this.exportPrice,this.profit);     
+        System.out.println("Trang thai san pham: "+ (this.productStatus ?"Hoat dong":"Khong hoat dong"));
+        System.out.println("Mo ta san pham: "+this.descriptions);
         System.out.println("Ma danh muc: "+this.catalog.getCatalogId()+" - Ten danh muc: "+this.catalog.getCatalogName());
         System.out.println("");
       

@@ -109,9 +109,9 @@ public class Categories implements Serializable, ICategories {
         } while (true);
 
         // Nhap trang thai
-          System.out.println("Nhap trang thai danh muc: ");
+        System.out.println("Nhap trang thai danh muc: ");
         do {
-          
+
             String strStatus = scan.nextLine();
             if (strStatus.equals("true") || strStatus.equals("false")) {
                 this.catalogStatus = Boolean.parseBoolean(strStatus);
@@ -129,8 +129,7 @@ public class Categories implements Serializable, ICategories {
 
         System.out.printf("Ma danh muc: %s - Ten danh muc: %s \n", this.catalogId, this.catalogName);
         System.out.printf("Mo ta danh muc: %s \n", this.descriptions);
-        String str = (this.catalogStatus == true) ? "Hoat dong" : "Khong hoat dong";
-        System.out.println("Danh muc cha " + this.parentId + "- Trang thai danh muc:" + str+"\n");
+        System.out.printf("Trang thai san pham: %s - Danh muc cha: %d \n" , (this.catalogStatus ? "Hoat dong" : "Khong hoat dong"),this.parentId);
 
     }
 
